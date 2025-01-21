@@ -7,8 +7,32 @@
     </head>
     <body>
         <main>
+            <h1>Doodle Drop</h1>
+            <nav>
+                <menu>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="draw.html">Draw</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="share.html">Share</a></li>
+                </menu>
+            </nav>
+            <br />
             <canvas id="drawCanvas" width = "200" style="border:1px solid black;">
             </canvas>
+            <br />
+            <label for="colors">Color:</label>
+            <select name="colors" id="colors">
+                <option value="red">Red</option>
+                <option value="yellow">Yellow</option>
+                <option value="blue">Blue</option>
+                <option value="black">Black</option>
+            </select>
+            <div id="buttons">
+                <button type="button" id="clearButton"><b>clear</b></button>
+                <button type="button" onclick="location.href='gallery.html';">gallery</button>
+                <button type="button" onclick="location.href='share.html';">share</button>
+            </div>
+
         </main>
         <footer>
             <a href="https://github.com/audreyburrell">Audrey Burrell's GitHub</a>
