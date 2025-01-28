@@ -43,3 +43,21 @@ menu a {
 menu a:hover{
     color:rgb(128, 32, 32);
 }
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+form div{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+input[type="text"]{
+    padding:8px;
+    width:250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+}
