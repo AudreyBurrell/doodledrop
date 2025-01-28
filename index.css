@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     background-color:blanchedalmond;
@@ -22,4 +21,25 @@ h1 {
     text-align: center;
     margin-bottom: 20px;
     color:rgb(98, 25, 165)
+}
+nav {
+    margin-bottom: 20px;
+}
+menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    list-style-type: none;
+}
+menu li {
+    padding: 10px;
+}
+menu a {
+    text-decoration: underline;
+    color:brown;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+menu a:hover{
+    color:rgb(128, 32, 32);
 }
