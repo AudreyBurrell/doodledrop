@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="draw.css">
         <meta charset="UTF-8" </>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Doodle Drop- Draw</title>
@@ -28,10 +29,16 @@
                 <option value="blue">Blue</option>
                 <option value="black">Black</option>
             </select>
+            <label for="size">Size:</label>
+            <select name="size" id="size">
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
             <div id="buttons">
-                <button type="button" id="clearButton"><b>clear</b></button>
-                <button type="button" onclick="location.href='gallery.html';">gallery</button>
-                <button type="button" onclick="location.href='share.html';">share</button>
+                <button type="button" class="btn btn-outline-danger" id="clearButton"><b>clear</b></button>
+                <button type="button" class= "btn btn-outline-primary"onclick="location.href='gallery.html';">gallery</button>
+                <button type="button" class="btn btn-outline-success"onclick="location.href='share.html';">share</button>
             </div>
 
         </main>
