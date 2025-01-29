@@ -43,3 +43,10 @@ menu a {
 menu a.hover{
     color: rgb(128, 32,32);
 }
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
+    gap:15px;
+    margin:20px auto;
+    padding:10px;
+}
