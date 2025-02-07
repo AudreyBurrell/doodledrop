@@ -1,6 +1,7 @@
 import React from 'react';
 import './login.css'
 
+
 export function Login() {
   return (
     <main className='container-fluid bg-secondary text-center'>
@@ -11,11 +12,12 @@ export function Login() {
                     <input type="text" placeholder="username here" required />
                 </div>
                 <br />
-                <button class="btn btn-outline-primary">Login &rarr;</button>
-                <button class="btn btn-outline-success">Register &rarr;</button>
+                <button className="btn btn-outline-primary">Login &rarr;</button>
+                <button className="btn btn-outline-success">Register &rarr;</button>
             </form>
             <br />
       </div>
     </main>
   );
 }
+
