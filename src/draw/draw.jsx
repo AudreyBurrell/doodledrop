@@ -1,4 +1,5 @@
 import React from 'react';
+import './draw.css'
 
 export function Draw() {
   return (

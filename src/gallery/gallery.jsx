@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Gallery() {
   return (
-    <main className='container-fluid bg-secondary text-center'>
+    <main>
       <div>gallery displayed here</div>
     </main>
   );

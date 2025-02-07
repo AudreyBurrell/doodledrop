@@ -4,7 +4,7 @@ import './login.css'
 
 export function Login() {
   return (
-    <main className='container-fluid bg-secondary text-center'>
+    <main>
       <div>
         <form method="get" action="draw.html">
                 <div>
