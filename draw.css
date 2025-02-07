@@ -45,10 +45,9 @@ menu a.hover{
 }
 canvas {
     display:block;
-    margin: 20px auto;
-    border: 2px solid black;
+    height:auto;
+    max-width: 100vw;
     background-color:aliceblue;
-    cursor:crosshair;
 }
 label {
     font-size:1.2em;
