@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.body{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    background-color:blanchedalmond;
+    color:#333;
+    padding:20px;
+}
+main {
+    max-width:900px;
+    margin:0 auto;
+    padding:20px;
+    border-radius:8px;
+    box-shadow: 0 4px 8 px rgba(0, 0, 0, 0.1);
+}
