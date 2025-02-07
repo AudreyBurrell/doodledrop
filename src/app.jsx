@@ -15,7 +15,7 @@ export default function App() {
             <header>
             <nav>
                 <menu>
-                    <li><NavLink to="index">Home</NavLink></li>
+                    <li><NavLink to="/">Home</NavLink></li>
                     <li><NavLink to="draw">Draw</NavLink></li>
                     <li><NavLink to="gallery">Gallery</NavLink></li>
                     <li><NavLink to="share">Share</NavLink></li>
@@ -23,11 +23,21 @@ export default function App() {
             </nav>
             <br />
             </header>
-    
+            <Routes>
+                <Route path='/' element={<Login />} exact />
+                <Route path='/draw' element={<Draw />} />
+                <Route path='/gallery' element={<Gallery />} />
+                <Route path='/share' element={<Share />} />
+                <Route path='*' element={<NotFound />} />
+            </Routes>
         <footer>
             <a href="https://github.com/AudreyBurrell/startup">Audrey Burrell's GitHub</a>
         </footer>  
       </div>
       </BrowserRouter> 
     );
+  }
+
+  function NotFound() {
+    return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
   }
