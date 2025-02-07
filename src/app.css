@@ -16,3 +16,9 @@ main {
     border-radius:8px;
     box-shadow: 0 4px 8 px rgba(0, 0, 0, 0.1);
 }
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 20px;
+    color:rgb(98, 25, 165);
+}

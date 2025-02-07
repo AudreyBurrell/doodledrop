@@ -13,6 +13,7 @@ export default function App() {
         <BrowserRouter>
         <div className='body'>
             <header>
+            <h1>DoodleDrop</h1>
             <nav>
                 <menu>
                     <li><NavLink to="/">Home</NavLink></li>
