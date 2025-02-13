@@ -4,7 +4,9 @@ import './draw.css';
 
 export function Draw() {
   const navigate = useNavigate();
+
   const [color, setColor] = useState('black'); //default is black
+  const [brushSize, setBrushSize] = useState(5); //default brush size
   const canvasRef = useRef(null);
 
   //update canvas when color changes
@@ -12,11 +14,17 @@ export function Draw() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.strokeStyle = color;
-  }, [color]);
+    ctx.lineWidth = brushSize;
+  }, [color, brushSize]);
   //handle color change in the dropdown
   const handleColorChange = (e) => {
     setColor(e.target.value);
   };
+  //handle brush size change
+  const handleSizeChange = (e) => {
+    const size = e.target.value === 'small' ? 5 : e.target.value === 'medium' ? 10 : 15;
+    setBrushSize(size);
+  }
 
   return (
     <main>
