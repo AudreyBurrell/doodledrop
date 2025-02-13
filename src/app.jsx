@@ -32,7 +32,7 @@ export default function App() {
                 <Route path='*' element={<NotFound />} />
             </Routes>
         <footer>
-            <a href="https://github.com/AudreyBurrell/startup">Audrey Burrell's GitHub</a>
+            <a href="https://github.com/AudreyBurrell/doodledrop">Audrey Burrell's GitHub</a>
         </footer>  
       </div>
       </BrowserRouter> 
