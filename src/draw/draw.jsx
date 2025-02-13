@@ -49,18 +49,15 @@ export function Draw() {
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-
-    const rect = canvas.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left;
-    const offsetY = e.clientY - rect.top;
+    const { x,y } = getMousePosition(e);
 
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
-    ctx.lineTo(offsetX, offsetY);
+    ctx.lineTo(x, y);
     ctx.stroke();
 
-    setLastX(offsetX);
-    setLastY(offsetY);
+    setLastX(x);
+    setLastY(y);
   }
   //mouse up (stop drawing)
   const handleMouseUp = () => {
@@ -83,7 +80,7 @@ export function Draw() {
         <canvas
           ref = {canvasRef}
           width = "400"
-          hegiht = "400"
+          height = "500"
           className = "container-fluid"
           style={{ border: '1px solid black' }}
           onMouseDown = {handleMouseDown}
