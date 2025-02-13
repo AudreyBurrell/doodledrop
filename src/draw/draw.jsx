@@ -28,24 +28,34 @@ export function Draw() {
     const size = e.target.value === 'small' ? 5 : e.target.value === 'medium' ? 10 : 15;
     setBrushSize(size);
   }
+  //get mouse position relative to the canvas
+  const getMousePosition = (e) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect(); //get canvas position
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    return { x,y };
+  }
   //handle mouse down (start drawing)
   const handleMouseDown = (e) => {
     setIsDrawing(true);
-    const canvas = canvasRef.current;
-    setLastX(e.nativeEvent.offsetX); //get current mouse x position
-    setLastY(e.nativeEvent.offsetY);
+    const { x,y } = getMousePosition(e);
+    setLastX(x); //get current mouse x position
+    setLastY(y);
   }
   //handle mouse moving
   const handleMouseMove = (e) => {
     if (!isDrawing) return;
+
+    const { x,y } = getMousePosition(e);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
-    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY); //draw to new position
+    ctx.lineTo(x,y); //draw to new position
     ctx.stroke();
-    setLastX(e.nativeEvent.offsetX);
-    setLastY(e.nativeEvent.offsetY);
+    setLastX(x);
+    setLastY(y);
   }
   //mouse up (stop drawing)
   const handleMouseUp = () => {
@@ -86,7 +96,7 @@ export function Draw() {
             <option value="black">Black</option>
           </select>
           <label htmlFor="size">Size:</label>
-          <select id="size">
+          <select id="size" value={brushSize === 5 ? 'small' : brushSize === 10 ? 'medium' : 'large'} onChange={handleSizeChange}>
             <option value="small">Small</option>
             <option value="medium">Medium</option>
             <option value="large">Large</option>
