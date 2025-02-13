@@ -47,15 +47,20 @@ export function Draw() {
   const handleMouseMove = (e) => {
     if (!isDrawing) return;
 
-    const { x,y } = getMousePosition(e);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+
+    const rect = canvas.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
-    ctx.lineTo(x,y); //draw to new position
+    ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
-    setLastX(x);
-    setLastY(y);
+
+    setLastX(offsetX);
+    setLastY(offsetY);
   }
   //mouse up (stop drawing)
   const handleMouseUp = () => {
