@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './share.css';
 
 export function Share() {
   const navigate = useNavigate();
+  const [imageSrc, setImageSrc] = useState('');
+
+  useEffect(() => {
+    const savedImage = localStorage.getItem('sharedImage');
+    if (savedImage) {
+      setImageSrc(savedImage); // Set state with the image
+    } else {
+      console.warn('No image found in local storage'); // Debugging log
+    }
+  }, []);
+
 
   return (
     <main>
@@ -13,8 +24,11 @@ export function Share() {
           <input type="email" id="recipientEmail" name="recipientEmail" placeholder="Enter email" required />
           
           <div id="imageToSend">
-            <p>Image to send...</p>
-            <img src="placeholder1.png" alt="placeholder" width="100" />
+            {imageSrc ? (
+              <img src={imageSrc} alt="Shared Drawing" width="200" />
+            ) : (
+              <p>No image available</p>
+            )}
           </div>
           
           <button type="submit" className="btn btn-outline-success">
