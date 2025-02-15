@@ -11,8 +11,9 @@ import { Share } from './share/share';
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Define the onLogin function that updates the loggedIn state
   const handleLogin = () => {
-    setIsLoggedIn(true); // Mark user as logged in
+    setIsLoggedIn(true);
   };
 
   return (
@@ -32,11 +33,13 @@ export default function App() {
         </header>
 
         <Routes>
+          {/* Pass the handleLogin function as a prop to Login */}
           <Route 
             path="/" 
             element={<Login onLogin={handleLogin} />} 
             exact 
           />
+          {/* If not logged in, redirect to Login */}
           <Route path="/draw" element={isLoggedIn ? <Draw /> : <Login />} />
           <Route path="/gallery" element={isLoggedIn ? <Gallery /> : <Login />} />
           <Route path="/share" element={isLoggedIn ? <Share /> : <Login />} />
@@ -54,3 +57,5 @@ export default function App() {
 function NotFound() {
   return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
 }
+
+

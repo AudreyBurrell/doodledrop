@@ -19,6 +19,18 @@ export function Draw() {
     ctx.strokeStyle = color;
     ctx.lineWidth = brushSize;
   }, [color, brushSize]);
+  //handle canvas resizing
+  useEffect(() => {
+    const resizeCanvas = () => {
+      const canvas = canvasRef.current;
+      const { width, height } = canvas.getBoundingClientRect();
+      canvas.width = width;
+      canvas.height = height;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    return () => window.removeEventListener('resize', resizeCanvas);
+  }, []);
   //handle color change in the dropdown
   const handleColorChange = (e) => {
     setColor(e.target.value);
@@ -31,11 +43,13 @@ export function Draw() {
   //get mouse position relative to the canvas
   const getMousePosition = (e) => {
     const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect(); //get canvas position
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const rect = canvas.getBoundingClinetRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
     return { x,y };
-  }
+  };
   //handle mouse down (start drawing)
   const handleMouseDown = (e) => {
     setIsDrawing(true);
@@ -105,10 +119,8 @@ return (
     <div>
       <canvas
         ref = {canvasRef}
-        width = "400"
-        height = "500"
         className = "container-fluid"
-        style={{ border: '1px solid black' }}
+        style={{ border: '1px solid black', width:'100%', height:'500px' }}
         onMouseDown = {handleMouseDown}
         onMouseMove = {handleMouseMove}
         onMouseUp = {handleMouseUp}
