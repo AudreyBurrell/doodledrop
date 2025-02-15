@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
@@ -9,36 +9,48 @@ import { Draw } from './draw/draw';
 import { Share } from './share/share';
 
 export default function App() {
-    return (
-        <BrowserRouter>
-        <div className='body'>
-            <header>
-            <h1>DoodleDrop</h1>
-            <nav>
-                <menu>
-                    <li><NavLink to="/">Home</NavLink></li>
-                    <li><NavLink to="draw">Draw</NavLink></li>
-                    <li><NavLink to="gallery">Gallery</NavLink></li>
-                    <li><NavLink to="share">Share</NavLink></li>
-                </menu>
-            </nav>
-            <br />
-            </header>
-            <Routes>
-                <Route path='/' element={<Login />} exact />
-                <Route path='/draw' element={<Draw />} />
-                <Route path='/gallery' element={<Gallery />} />
-                <Route path='/share' element={<Share />} />
-                <Route path='*' element={<NotFound />} />
-            </Routes>
-        <footer>
-            <a href="https://github.com/AudreyBurrell/doodledrop">Audrey Burrell's GitHub</a>
-        </footer>  
-      </div>
-      </BrowserRouter> 
-    );
-  }
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  function NotFound() {
-    return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
-  }
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Mark user as logged in
+  };
+
+  return (
+    <BrowserRouter>
+      <div className='body'>
+        <header>
+          <h1>DoodleDrop</h1>
+          <nav>
+            <menu>
+              <li><NavLink to="/" disabled={isLoggedIn}>Home</NavLink></li>
+              <li><NavLink to="draw" disabled={!isLoggedIn}>Draw</NavLink></li>
+              <li><NavLink to="gallery" disabled={!isLoggedIn}>Gallery</NavLink></li>
+              <li><NavLink to="share" disabled={!isLoggedIn}>Share</NavLink></li>
+            </menu>
+          </nav>
+          <br />
+        </header>
+
+        <Routes>
+          <Route 
+            path="/" 
+            element={<Login onLogin={handleLogin} />} 
+            exact 
+          />
+          <Route path="/draw" element={isLoggedIn ? <Draw /> : <Login />} />
+          <Route path="/gallery" element={isLoggedIn ? <Gallery /> : <Login />} />
+          <Route path="/share" element={isLoggedIn ? <Share /> : <Login />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+
+        <footer>
+          <a href="https://github.com/AudreyBurrell/doodledrop">Audrey Burrell's GitHub</a>
+        </footer>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+function NotFound() {
+  return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
+}
