@@ -83,6 +83,21 @@ export function Draw() {
       console.error('Canvas not found');
     }
   };
+  //saving to put in gallery
+  const handleSaveToGallery = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const dataURL = canvas.toDataURL('image/png');
+      let images = JSON.parse(localStorage.getItem('galleryImages')) || [];
+      images.push(dataURL);
+      localStorage.setItem('galleryImages', JSON.stringify(images));
+      
+      // Use a timeout to ensure state is updated before navigation
+      setTimeout(() => {
+        navigate('/gallery');
+      }, 100);
+    }
+  }
   
 
 return (
@@ -119,7 +134,7 @@ return (
       <button type="button" className="btn btn-outline-danger" onClick={handleClear}>
       <b>Clear</b>
       </button>
-      <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/gallery')}>
+      <button type="button" className="btn btn-outline-primary" onClick={handleSaveToGallery}>
       Gallery
       </button>
       <button type="button" className="btn btn-outline-success" onClick={handleShare}>
