@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 
-export function Login({ onLogin }) {  // Make sure this prop is being destructured correctly
+export function Login({ onLogin }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
 
@@ -15,8 +15,8 @@ export function Login({ onLogin }) {  // Make sure this prop is being destructur
       return;
     }
 
-    onLogin();  // Call onLogin function passed as prop to set logged in state
-    navigate('/draw');  // Navigate to the draw page after login
+    onLogin(); // Mark user as logged in
+    navigate('/draw'); // Navigate to the drawing page after login
   };
 
   return (
@@ -55,3 +55,4 @@ export function Login({ onLogin }) {  // Make sure this prop is being destructur
     </main>
   );
 }
+

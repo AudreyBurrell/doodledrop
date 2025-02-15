@@ -43,7 +43,7 @@ export function Draw() {
   //get mouse position relative to the canvas
   const getMousePosition = (e) => {
     const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClinetRect();
+    const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     const x = (e.clientX - rect.left) * scaleX;
