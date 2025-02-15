@@ -8,6 +8,9 @@ export function Gallery() {
 
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
+    //
+    console.log("Retrieved images from localStorage:", storedImages);
+    //
     setImages(storedImages);
   }, []);
 
