@@ -5,6 +5,9 @@ import './share.css';
 export function Share() {
   const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState('');
+  const [email, setEmail] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  
 
   useEffect(() => {
     const savedImage = localStorage.getItem('sharedImage');
@@ -15,14 +18,25 @@ export function Share() {
     }
   }, []);
 
+  const handleInputChange = (event) => {
+    setEmail(event.target.value);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSuccessMessage('Image successfully sent!');
+    setEmail(''); //clear email input after sending
+    setTimeout(() => setSuccessMessage(''), 3000); //hide message after three seconds
+  }
+
 
   return (
     <main>
       <div>
-        <form id="sendForm">
+        <form id="sendForm" onSubmit={handleSubmit}>
           <label htmlFor="recipientEmail">Enter recipient's email: </label>
-          <input type="email" id="recipientEmail" name="recipientEmail" placeholder="Enter email" required />
-          
+          <input type="email" id="recipientEmail" name="recipientEmail" placeholder="Enter email" required value={email} onChange={handleInputChange} />
+          {successMessage && <p className="success-message">{successMessage}</p>}
           <div id="imageToSend">
             {imageSrc ? (
               <img src={imageSrc} alt="Shared Drawing" width="200" />
@@ -31,7 +45,7 @@ export function Share() {
             )}
           </div>
           
-          <button type="submit" className="btn btn-outline-success">
+          <button type="submit" className="btn btn-outline-success" disabled={!email.trim()}>
             <b>Send</b>
           </button>
           
@@ -45,6 +59,7 @@ export function Share() {
           >
             <b>&larr;</b>
           </button>
+
         </form>
       </div>
     </main>
