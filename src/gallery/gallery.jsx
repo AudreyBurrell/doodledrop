@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './gallery.css';
 
 export function Gallery() {
   const navigate = useNavigate();
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const storedImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
+    setImages(storedImages);
+  }, []);
 
   return (
     <main>
       <div className="gallery-grid">
-        <div className="item">
-          <img src="placeholder1.png" alt="placeholder" width="100" />
-        </div>
-        <div className="item">
-          <img src="placeholder2.png" alt="placeholder" width="100" />
-        </div>
+        {images.length > 0 ? (
+          images.map((image, index) => (
+            <div className="item" key={index}>
+              <img src={image} alt={`Drawing ${index + 1}`} width="100" />
+            </div>
+          ))
+        ) : (
+          <p>No images in gallery.</p>
+        )}
       </div>
       <button 
         type="button" 
