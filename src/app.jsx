@@ -15,6 +15,9 @@ export default function App() {
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  }
 
   return (
     <BrowserRouter>
@@ -48,6 +51,10 @@ export default function App() {
 
         <footer>
           <a href="https://github.com/AudreyBurrell/doodledrop">Audrey Burrell's GitHub</a>
+          
+          {isLoggedIn && (
+            <button className="logout-button" onClick={handleLogout}>Log Out</button>
+          )}
         </footer>
       </div>
     </BrowserRouter>

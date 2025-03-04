@@ -27,20 +27,23 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color:#f8f9fa;
-    padding: 10px;
+    background-color: #f8f9fa;
+    padding: 5px 10px; /* Reduced padding */
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-.logout-button {
-    padding: 10px 15px;
+    font-size: 0.8em; /* Smaller font size */
+  }
+  
+  .logout-button {
+    padding: 8px 12px; /* Smaller padding for the button */
     background-color: #dc3545;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-.logout-button:hover{
+  }
+  
+  .logout-button:hover {
     background-color: #c82333;
-}
+  }
