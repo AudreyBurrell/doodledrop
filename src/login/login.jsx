@@ -10,7 +10,7 @@ export function Login({ onLogin }) {
     setUsername(event.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleLogin = () => {
     if (username.trim() === '') {
       return;
     }
@@ -18,6 +18,13 @@ export function Login({ onLogin }) {
     onLogin(); // Mark user as logged in
     navigate('/draw'); // Navigate to the drawing page after login
   };
+  const handleRegister = () => {
+    if (username.trim() === ''){
+      return;
+    }
+    alert('User ${username} registered successfully!')
+    navigate('/draw')
+  }
 
   return (
     <main>
@@ -37,7 +44,7 @@ export function Login({ onLogin }) {
           <button
             type="button"
             className="btn btn-outline-primary"
-            onClick={handleSubmit}
+            onClick={handleLogin}
             disabled={!username.trim()}
           >
             Login &rarr;
@@ -45,7 +52,7 @@ export function Login({ onLogin }) {
           <button
             type="button"
             className="btn btn-outline-success"
-            onClick={handleSubmit}
+            onClick={handleRegister}
             disabled={!username.trim()}
           >
             Register &rarr;
