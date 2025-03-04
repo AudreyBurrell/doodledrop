@@ -99,8 +99,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out** - Making the canvas actually draw correctly and the images replacing the placeholder images was pretty difficult, and I had to consult google and AI, but I did eventually get it working. One thing that I did was make it so when the user hasn't logged in yet, they can't click on the links in the navigation bar to get around the site. It was a bug that I noticed while testing.
+- [x] **Hooks** - Used hooks to draw on the canvas (useRef, useEffect) , saving images to gallery, mouse position for drawing, etc. 
 
 ## 🚀 Service deliverable
 
