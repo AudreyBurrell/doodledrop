@@ -10,15 +10,17 @@ import { Share } from './share/share';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   // Define the onLogin function that updates the loggedIn state
-  const handleLogin = () => {
+  const handleLogin = (username) => {
     setIsLoggedIn(true);
   };
 
   // Define the handleLogout function
   const handleLogout = () => {
     setIsLoggedIn(false);
+    navigate('/');
   };
 
   return (
