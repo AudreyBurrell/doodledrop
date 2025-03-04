@@ -22,7 +22,7 @@ export function Login({ onLogin }) {
     if (username.trim() === ''){
       return;
     }
-    alert('User ${username} registered successfully!')
+    alert('User registered successfully!')
     navigate('/draw')
   }
 

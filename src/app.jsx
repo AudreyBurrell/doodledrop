@@ -15,9 +15,11 @@ export default function App() {
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
+
+  // Define the handleLogout function
   const handleLogout = () => {
     setIsLoggedIn(false);
-  }
+  };
 
   return (
     <BrowserRouter>
@@ -36,7 +38,6 @@ export default function App() {
         </header>
 
         <Routes>
-          {/* Pass the handleLogin function as a prop to Login */}
           <Route 
             path="/" 
             element={<Login onLogin={handleLogin} />} 
@@ -50,11 +51,11 @@ export default function App() {
         </Routes>
 
         <footer>
-          <a href="https://github.com/AudreyBurrell/doodledrop">Audrey Burrell's GitHub</a>
-          
+          {/* Logout button */}
           {isLoggedIn && (
-            <button className="logout-button" onClick={handleLogout}>Log Out</button>
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
           )}
+          <a href="https://github.com/AudreyBurrell/doodledrop">Audrey Burrell's GitHub</a>
         </footer>
       </div>
     </BrowserRouter>
@@ -64,5 +65,6 @@ export default function App() {
 function NotFound() {
   return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
 }
+
 
 
