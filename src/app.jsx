@@ -10,7 +10,6 @@ import { Share } from './share/share';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
 
   // Define the onLogin function that updates the loggedIn state
   const handleLogin = (username) => {
@@ -20,7 +19,7 @@ export default function App() {
   // Define the handleLogout function
   const handleLogout = () => {
     setIsLoggedIn(false);
-    navigate('/');
+    // navigate('/'); // This line was causing issues
   };
 
   return (
