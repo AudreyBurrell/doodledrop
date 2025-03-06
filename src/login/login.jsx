@@ -14,17 +14,9 @@ export function Login({ onLogin }) {
     if (username.trim() === '') {
       return;
     }
-
-    onLogin(); // Mark user as logged in
-    navigate('/draw'); // Navigate to the drawing page after login
+    onLogin(username);
+    navigate('/draw'); 
   };
-  const handleRegister = () => {
-    if (username.trim() === ''){
-      return;
-    }
-    alert('User registered successfully!')
-    navigate('/draw')
-  }
 
   return (
     <main>
@@ -52,7 +44,7 @@ export function Login({ onLogin }) {
           <button
             type="button"
             className="btn btn-outline-success"
-            onClick={handleRegister}
+            onClick={handleLogin} 
             disabled={!username.trim()}
           >
             Register &rarr;
