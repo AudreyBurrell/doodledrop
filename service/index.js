@@ -25,6 +25,28 @@ apiRouter.post('/auth/create', async (req, res) => {
         res.send({ username: user.username });
     }
 });
+async function findUser(field, value) {
+    if (!value) return null;
+    return users.find((user) => user[field] === value);
+}
+async function createUser(username){
+    const user = {
+        username : username,
+        token: uuid.v4(),
+    };
+    users.push(user);
+    return user;
+}
+
+
+//set auth cookie in the http response
+function setAuthCookie(res, authToken) {
+    res.cookie(authCookieName, authToken, {
+        secure: true,
+        httpOnly:true,
+        sameSite:'strict',
+    });
+}
 
 
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
