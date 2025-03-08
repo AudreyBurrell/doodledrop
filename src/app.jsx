@@ -14,6 +14,8 @@ export default function App() {
   // Define the onLogin function that updates the loggedIn state
   const handleLogin = (username) => {
     setIsLoggedIn(true);
+    localStorage.setItem('username', username);
+    console.log(`User ${username} logged in`);
   };
 
   // Define the handleLogout function
@@ -21,6 +23,7 @@ export default function App() {
     setIsLoggedIn(false);
     // navigate('/'); // This line was causing issues
   };
+  
 
   return (
     <BrowserRouter>
@@ -45,9 +48,9 @@ export default function App() {
             exact 
           />
           {/* If not logged in, redirect to Login */}
-          <Route path="/draw" element={isLoggedIn ? <Draw /> : <Login />} />
-          <Route path="/gallery" element={isLoggedIn ? <Gallery /> : <Login />} />
-          <Route path="/share" element={isLoggedIn ? <Share /> : <Login />} />
+          <Route path="/draw" element={isLoggedIn ? <Draw /> : <Login onLogin={handleLogin} />} />
+          <Route path="/gallery" element={isLoggedIn ? <Gallery /> : <Login onLogin={handleLogin} />} />
+          <Route path="/share" element={isLoggedIn ? <Share /> : <Login onLogin={handleLogin} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
 

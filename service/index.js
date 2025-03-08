@@ -13,8 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
-let apiRouter = express.Router();
-app.use('/api', apiRouter);
+
 
 //middleware check authentication
 const verifyAuth = (req, res, next) => {
@@ -24,6 +23,7 @@ const verifyAuth = (req, res, next) => {
         return res.status(401).send({ msg:'Unauthorized' });
     }
     req.user = user;
+    console.log('User authenticated:', user.username);
     next();
 };
 
@@ -68,26 +68,8 @@ async function createUser(username){
     users.push(user);
     return user;
 }
-//endpoint to save a drawing
-apiRouter.post('/drawings', verifyAuth, (req, res) => {
-    const { drawingData } = req.body;
-    const drawing = {
-        id: uuid.v4(),
-        username: req.user.username,
-        drawingData,
-    };
-    drawings.push(drawing);
-    res.status(201).send(drawing);
-});
-//endpoint to get all drawing for a user
-apiRouter.get('/drawings', verifyAuth, (req, res) => {
-    const { username } = req.query;
-    if (!username) {
-        return res.status(400).send({ msg: 'Username is requierd' });
-    }
-    const userDrawings = drawings.filter(drawing => drawing.username === username);
-    res.send(userDrawings);
-})
+
+
 
 
 //set auth cookie in the http response
@@ -101,7 +83,7 @@ function setAuthCookie(res, authToken) {
 
 
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
-
+app.use('/api', apiRouter);
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

@@ -17,22 +17,14 @@ export function Login({ onLogin }) {
     }
     if (typeof onLogin === 'function') {
       onLogin(username);
-      navigate('/draw');
     } else {
       console.error('onLogin is not a function');
     }
-    // localStorage.setItem('username', username);
-    // onLogin(username);
-    // navigate('/draw'); 
+    localStorage.setItem('username', username);
+    navigate('/draw');
   };
   const handleRegister = async () => {
     handleLogin();
-    // if (username.trim() === ''){
-    //   return;
-    // }
-    // localStorage.setItem('username', username);
-    // onLogin(username);
-    // navigate('/draw');
   }
 
   return (

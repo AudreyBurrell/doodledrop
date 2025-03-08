@@ -5,34 +5,16 @@ import './gallery.css';
 export function Gallery() {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
-  const [username, setUsername] = useState('');
   
-
   useEffect(() => {
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
+    const savedImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
+    setImages(savedImages);
   }, []);
-  useEffect(() => {
-    if (username) {
-      fetchDrawings(username);
-    }
-  }, [username]);
-  const fetchDrawings = async (username) => {
-    try {
-      const response = await fetch(`/api/drawings?username=${username}`); 
-      if (response.ok) {
-        const drawings = await response.json();
-        const images = drawings.map(drawing => drawing.drawingData);
-        setImages(images);
-      } else {
-        console.error('Error fetching drawings');
-      }
-    } catch (error) {
-      console.error('Error fetching drawings:', error);
-    } 
-  };
+  const saveImage = (newImage) => {
+    const updatedImages = [...images, newImage];
+    setImages(updatedImages);
+    localStorage.setItem('galleryImages', JSON.stringify(updatedImages));
+  }
 
   return (
     <main>
