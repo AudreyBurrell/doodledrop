@@ -20,7 +20,7 @@ export function Gallery() {
           console.error('Failed to fetch gallery:', response.status);
         }
       } catch (error) {
-        console.error('error fetching gallery:', error);
+        console.error('Error fetching gallery:', error);
       }
     };
     fetchGallery();

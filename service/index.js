@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
-const apiRouter = express.Router;
+const apiRouter = express.Router();
 
 //middleware check authentication
 const verifyAuth = (req, res, next) => {
