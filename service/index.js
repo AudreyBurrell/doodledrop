@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
-
+const apiRouter = express.Router;
 
 //middleware check authentication
 const verifyAuth = (req, res, next) => {
@@ -54,6 +54,15 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     res.clearCookie(authCookieName);
     res.status(204).end();
 });
+
+//get user gallery
+app.get('/api/gallery', verifyAuth, (req, res) => {
+    const userDrawings = drawings.filter(drawing => drawing.userId === req.user.token);
+    res.send(userDrawings);
+})
+
+
+
 //helper function to find user by field
 async function findUser(field, value) {
     if (!value) return null;
@@ -83,6 +92,7 @@ function setAuthCookie(res, authToken) {
 
 
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
+//set up api router
 app.use('/api', apiRouter);
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
