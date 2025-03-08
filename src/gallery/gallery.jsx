@@ -21,7 +21,7 @@ export function Gallery() {
   }, [username]);
   const fetchDrawings = async (username) => {
     try {
-      const response = await fetch(`/api/api/drawings?username=${username}`);
+      const response = await fetch(`/api/drawings?username=${username}`); 
       if (response.ok) {
         const drawings = await response.json();
         const images = drawings.map(drawing => drawing.drawingData);

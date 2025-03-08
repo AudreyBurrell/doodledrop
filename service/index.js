@@ -16,6 +16,17 @@ app.use(express.static('public'));
 let apiRouter = express.Router();
 app.use('/api', apiRouter);
 
+//middleware check authentication
+const verifyAuth = (req, res, next) => {
+    const token = req.cookies[authCookieName];
+    const user = users.find(u => u.token === token);
+    if (!user) {
+        return res.status(401).send({ msg:'Unauthorized' });
+    }
+    req.user = user;
+    next();
+};
+
 //Create a new user
 apiRouter.post('/auth/create', async (req, res) => {
     if (await findUser('username', req.body.username)) {
@@ -58,18 +69,18 @@ async function createUser(username){
     return user;
 }
 //endpoint to save a drawing
-apiRouter.post('/api/drawings', (req, res) => {
-    const { username, drawingData } = req.body;
+apiRouter.post('/drawings', verifyAuth, (req, res) => {
+    const { drawingData } = req.body;
     const drawing = {
         id: uuid.v4(),
-        username,
+        username: req.user.username,
         drawingData,
     };
     drawings.push(drawing);
     res.status(201).send(drawing);
 });
 //endpoint to get all drawing for a user
-apiRouter.get('/api/drawings', (req, res) => {
+apiRouter.get('/drawings', verifyAuth, (req, res) => {
     const { username } = req.query;
     if (!username) {
         return res.status(400).send({ msg: 'Username is requierd' });

@@ -99,32 +99,37 @@ export function Draw() {
   };
   //saving to put in gallery
   const handleSaveToGallery = async () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const dataURL = canvas.toDataURL('image/png');
+    try {
       const username = localStorage.getItem('username');
       if (!username) {
-        console.error('No username found in local storage')
+        console.error('no username found in local storage');
         return;
       }
-      try {
-        const response = await fetch('/api/drawings', {
-          method:'POST',
-          headers: {
-            'Content-Type':'application/json',
-          },
-          body: JSON.stringify({ username, drawingData: dataURL }),
-        });
-        if (response.ok){
-          const savedDrawing = await response.json();
-          console.log('Drawings aved:', savedDrawing);
-          navigate('/gallery');
-        } else {
-          console.error('Error saving drawing');
-        } 
-      } catch (error) {
-        console.error('Error saving drawing:', error);
+      const canvas = document.getElementById('drawingCanvas');
+      if (!canvas) {
+        console.error('Canvas not found');
+        return;
       }
+      const dataURL = canvas.toDataURL('image/png');
+      console.log("Data URL:", dataURL);
+      const response = await fetch('/api/drawings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({ username, drawingData: dataURL }),
+        credentials: 'same-origin',
+      });
+      if (response.ok) {
+        const savedDrawing = await response.json();
+        console.log('Drawing saved:', savedDrawing);
+        navigate('/gallery');
+      } else {
+        const errorData = await response.json();
+        console.error('Error saving drawing:', errorData);
+      }
+    } catch (error) {
+      console.error('An error occured while saving the drawing:', error);
     }
   }
   
@@ -133,6 +138,7 @@ return (
   <main>
     <div>
       <canvas
+        id="drawingCanvas"
         ref = {canvasRef}
         className = "container-fluid"
         style={{ border: '1px solid black', width:'100%', height:'500px' }}
