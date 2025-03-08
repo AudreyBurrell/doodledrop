@@ -25,10 +25,29 @@ apiRouter.post('/auth/create', async (req, res) => {
         res.send({ username: user.username });
     }
 });
+//login existing user
+apiRouter.post('/auth/login', async (req, res) => {
+    const user = await findUser('username', req.body.username);
+    if (user) {
+        //user found, log them in and send back the token
+        user.token - uuid.v4();
+        setAuthCookie(res, user.token);
+        res.send({ username: user.username });
+    } else {
+        res.status(401).send({ msg: 'Unauthorized' });
+    }
+});
+//logout a user
+apiRouter.delete('/auth/logout', async (req, res) => {
+    res.clearCookie(authCookieName);
+    res.status(204).end();
+});
+//helper function to find user by field
 async function findUser(field, value) {
     if (!value) return null;
     return users.find((user) => user[field] === value);
 }
+//helper function to create a user
 async function createUser(username){
     const user = {
         username : username,
