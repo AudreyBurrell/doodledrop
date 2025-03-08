@@ -57,7 +57,7 @@ export function Share() {
             id="backButton" 
             onClick={() => navigate('/draw')}
           >
-            <b>&larr;</b>
+            <b>&larr; Back to Drawing</b>
           </button>
 
         </form>
