@@ -115,13 +115,13 @@ export function Draw() {
           },
           body: JSON.stringify({ username, drawingData: dataURL }),
         });
-        if (response.ok) {
+        if (response.ok){
           const savedDrawing = await response.json();
-          console.log('Drawing saved:', savedDrawing);
+          console.log('Drawings aved:', savedDrawing);
           navigate('/gallery');
         } else {
           console.error('Error saving drawing');
-        }
+        } 
       } catch (error) {
         console.error('Error saving drawing:', error);
       }
