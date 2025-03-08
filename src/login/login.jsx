@@ -5,12 +5,13 @@ import './login.css';
 export function Login({ onLogin }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const handleInputChange = (event) => {
     setUsername(event.target.value);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (username.trim() === '') {
       return;
     }
@@ -18,6 +19,14 @@ export function Login({ onLogin }) {
     onLogin(username);
     navigate('/draw'); 
   };
+  const handleRegister = async () => {
+    if (username.trim() === ''){
+      return;
+    }
+    localStorage.setItem('username', username);
+    onLogin(username);
+    navigate('/draw');
+  }
 
   return (
     <main>
@@ -45,7 +54,7 @@ export function Login({ onLogin }) {
           <button
             type="button"
             className="btn btn-outline-success"
-            onClick={handleLogin} 
+            onClick={handleRegister} 
             disabled={!username.trim()}
           >
             Register &rarr;
