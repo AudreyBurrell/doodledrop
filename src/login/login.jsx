@@ -15,17 +15,24 @@ export function Login({ onLogin }) {
     if (username.trim() === '') {
       return;
     }
-    localStorage.setItem('username', username);
-    onLogin(username);
-    navigate('/draw'); 
+    if (typeof onLogin === 'function') {
+      onLogin(username);
+      navigate('/draw');
+    } else {
+      console.error('onLogin is not a function');
+    }
+    // localStorage.setItem('username', username);
+    // onLogin(username);
+    // navigate('/draw'); 
   };
   const handleRegister = async () => {
-    if (username.trim() === ''){
-      return;
-    }
-    localStorage.setItem('username', username);
-    onLogin(username);
-    navigate('/draw');
+    handleLogin();
+    // if (username.trim() === ''){
+    //   return;
+    // }
+    // localStorage.setItem('username', username);
+    // onLogin(username);
+    // navigate('/draw');
   }
 
   return (
