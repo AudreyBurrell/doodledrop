@@ -98,18 +98,33 @@ export function Draw() {
     }
   };
   //saving to put in gallery
-  const handleSaveToGallery = () => {
+  const handleSaveToGallery = async () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const dataURL = canvas.toDataURL('image/png');
-      let images = JSON.parse(localStorage.getItem('galleryImages')) || [];
-      images.push(dataURL);
-      localStorage.setItem('galleryImages', JSON.stringify(images));
-      
-      // Use a timeout to ensure state is updated before navigation
-      setTimeout(() => {
-        navigate('/gallery');
-      }, 100);
+      const username = localStorage.getItem('username');
+      if (!username) {
+        console.error('No username found in local storage')
+        return;
+      }
+      try {
+        const response = await fetch('/api/drawings', {
+          method:'POST',
+          headers: {
+            'Content-Type':'application/json',
+          },
+          body: JSON.stringify({ username, drawingData: dataURL }),
+        });
+        if (response.ok) {
+          const savedDrawing = await response.json();
+          console.log('Drawing saved:', savedDrawing);
+          navigate('/gallery');
+        } else {
+          console.error('Error saving drawing');
+        }
+      } catch (error) {
+        console.error('Error saving drawing:', error);
+      }
     }
   }
   

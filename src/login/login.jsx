@@ -14,6 +14,7 @@ export function Login({ onLogin }) {
     if (username.trim() === '') {
       return;
     }
+    localStorage.setItem('username', username);
     onLogin(username);
     navigate('/draw'); 
   };
