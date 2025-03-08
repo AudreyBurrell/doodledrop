@@ -4,25 +4,35 @@ import './gallery.css';
 
 export function Gallery() {
   const navigate = useNavigate();
-  const [images, setImages] = useState([]);
+  const [drawings, setDrawings] = useState([]);
   
   useEffect(() => {
-    const savedImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
-    setImages(savedImages);
-  }, []);
-  const saveImage = (newImage) => {
-    const updatedImages = [...images, newImage];
-    setImages(updatedImages);
-    localStorage.setItem('galleryImages', JSON.stringify(updatedImages));
-  }
+    const fetchGallery = async () => {
+      try {
+        const response = await fetch('/api/gallery', {
+          method:'GET',
+          credentials: 'include',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setDrawings(data);
+        } else {
+          console.error('Failed to fetch gallery:', response.status);
+        }
+      } catch (error) {
+        console.error('error fetching gallery:', error);
+      }
+    };
+    fetchGallery();
+  }, [])
 
   return (
     <main>
       <div className="gallery-grid">
-        {images.length > 0 ? (
-          images.map((image, index) => (
+        {drawings.length > 0 ? (
+          drawings.map((drawing, index) => (
             <div className="item" key={index}>
-              <img src={image} alt={`Drawing ${index + 1}`} width="100" />
+              <img src={drawing.data} alt={`Drawing ${index + 1}`} width="100" />
             </div>
           ))
         ) : (
@@ -34,7 +44,7 @@ export function Gallery() {
         id="backButton" 
         className="btn btn-outline-primary" 
         onClick={() => navigate('/draw')}>
-        &larr;
+        &larr; Back to Drawing
       </button>
     </main>
   );

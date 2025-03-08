@@ -58,7 +58,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 //get user gallery
 app.get('/api/gallery', verifyAuth, (req, res) => {
     const userDrawings = drawings.filter(drawing => drawing.userId === req.user.token);
-    res.send(userDrawings);
+    res.json(userDrawings);
 })
 //saving drawing to gallery
 app.post('/api/gallery', verifyAuth, (req, res) => {
