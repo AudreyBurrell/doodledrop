@@ -7,6 +7,7 @@ const app = express();
 const authCookieName = 'token';
 
 let users=[];
+let drawings=[];
 
 app.use(express.json());
 app.use(cookieParser());
@@ -30,7 +31,7 @@ apiRouter.post('/auth/login', async (req, res) => {
     const user = await findUser('username', req.body.username);
     if (user) {
         //user found, log them in and send back the token
-        user.token - uuid.v4();
+        user.token = uuid.v4();
         setAuthCookie(res, user.token);
         res.send({ username: user.username });
     } else {
@@ -56,6 +57,26 @@ async function createUser(username){
     users.push(user);
     return user;
 }
+//endpoint to save a drawing
+apiRouter.post('/api/drawings', (req, res) => {
+    const { username, drawingData } = req.body;
+    const drawing = {
+        id: uuid.v4(),
+        username,
+        drawingData,
+    };
+    drawings.push(drawing);
+    res.status(201).send(drawing);
+});
+//endpoint to get all drawing for a user
+apiRouter.get('/api/drawings', (req, res) => {
+    const { username } = req.query;
+    if (!username) {
+        return res.status(400).send({ msg: 'Username is requierd' });
+    }
+    const userDrawings = drawings.filter(drawing => drawing.username === username);
+    res.send(userDrawings);
+})
 
 
 //set auth cookie in the http response

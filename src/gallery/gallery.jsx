@@ -6,6 +6,7 @@ export function Gallery() {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [username, setUsername] = useState('');
+  
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -15,12 +16,12 @@ export function Gallery() {
   }, []);
   useEffect(() => {
     if (username) {
-      fetchDrawings();
+      fetchDrawings(username);
     }
   }, [username]);
-  const fetchDrawings = async () => {
+  const fetchDrawings = async (username) => {
     try {
-      const response = await fetch(`/api/drawings?username=${username}`);
+      const response = await fetch(`/api/api/drawings?username=${username}`);
       if (response.ok) {
         const drawings = await response.json();
         const images = drawings.map(drawing => drawing.drawingData);
