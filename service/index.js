@@ -60,6 +60,16 @@ app.get('/api/gallery', verifyAuth, (req, res) => {
     const userDrawings = drawings.filter(drawing => drawing.userId === req.user.token);
     res.send(userDrawings);
 })
+//saving drawing to gallery
+app.post('/api/gallery', verifyAuth, (req, res) => {
+    const newDrawing = {
+        userId: req.user.token,
+        data: req.body.data,
+        createdAt: new Date(),
+    };
+    drawings.push(newDrawing);
+    res.status(201).send(newDrawing);
+});
 
 
 
