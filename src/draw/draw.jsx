@@ -97,25 +97,15 @@ const handleShare = () => {
 //saving to put in gallery
 const handleSaveToGallery = async () => {
   const canvas = canvasRef.current;
-  if (canvas) {
-    const dataURL = canvas.toDataURL('image/png');
-    fetch('/api/drawings-gallery', {
-      method:'POST',
-      headers : {'Content-Type' : 'application/json',},
-      body: JSON.stringify({ image: dataURL }),
-    })
-    .then((response) => {
-      if (response.ok) {
-        console.log('Saved image to gallery!');
-        navigate('/gallery');
-      } else {
-        console.error('Error saving image to gallery:', response.status);
-      }
-    })
-    .catch((err) => {
-      console.error('Error:', err);
-    });
-  }
+  const dataURL = canvas.toDataURL('image/png');
+  let images = JSON.parse(localStorage.getItem('galleryImages'))
+  images.push(dataURL);
+  localStorage.setItem('gallerImages', JSON.stringify(images));
+  
+  setTimeout(() => {
+    navigate('/gallery');
+  }, 100)
+
 };
 
 

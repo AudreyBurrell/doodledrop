@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
-const port = process.argv.length > 2 ? process.argv[2] : 5174; //used to be 3000
+const port = process.argv.length > 2 ? process.argv[2] : 4000; //used to be 3000
 
 var apiRouter = express.Router();
 
