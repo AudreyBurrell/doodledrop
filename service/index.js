@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
-const port = process.argv.length > 2 ? process.argv[2] : 4000; //used to be 3000
+const port = process.argv.length > 2 ? process.argv[2] : 5174; //used to be 3000
 
 const apiRouter = express.Router();
 
@@ -58,12 +58,12 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 });
 
 //get user gallery
-app.get('/api/gallery', verifyAuth, (req, res) => {
+app.get('/drawings-gallery', verifyAuth, (req, res) => {
     const userDrawings = drawings.filter(drawing => drawing.userId === req.user.token);
-    res.json(userDrawings);
+    res.json(userDrawings.map(drawing => drawing.data));
 })
 //saving drawing to gallery
-app.post('/api/gallery', verifyAuth, (req, res) => {
+app.post('/drawings-gallery', verifyAuth, (req, res) => {
     const newDrawing = {
         userId: req.user.token,
         data: req.body.data,

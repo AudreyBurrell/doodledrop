@@ -9,7 +9,7 @@ export function Gallery() {
   useEffect(()=>{
     const fetchGallery = async () => {
       try {
-        const response = await fetch('/api/gallery', {
+        const response = await fetch('/api/drawings-gallery', {
           method: 'GET',
           credentials: 'include',
         });
