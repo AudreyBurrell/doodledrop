@@ -4,6 +4,7 @@ const express = require('express');
 const uuid = require('uuid');
 const app = express();
 
+const isAuthenticated = require('./middleware/authMiddleware')
 const authCookieName = 'token';
 
 let users=[];
@@ -16,18 +17,6 @@ app.use(express.static('public'));
 const port = process.argv.length > 2 ? process.argv[2] : 4000; //used to be 3000
 
 var apiRouter = express.Router();
-
-//middleware check authentication
-const verifyAuth = (req, res, next) => {
-    const token = req.cookies[authCookieName];
-    const user = users.find(u => u.token === token);
-    if (!user) {
-        return res.status(401).send({ msg:'Unauthorized' });
-    }
-    req.user = user;
-    console.log('User authenticated:', user.username);
-    next();
-};
 
 //Create a new user
 apiRouter.post('/auth/create', async (req, res) => {
@@ -55,28 +44,6 @@ apiRouter.post('/auth/login', async (req, res) => {
 apiRouter.delete('/auth/logout', async (req, res) => {
     res.clearCookie(authCookieName);
     res.status(204).end();
-});
-
-//get user gallery
-app.get('/drawings-gallery', verifyAuth, (req, res) => {
-    const userDrawings = drawings.filter(drawing => drawing.userId === req.user.token);
-    const imageUrls = userDrawings.map(drawing => drawing.data);
-    res.json(imageUrls);
-})
-//saving drawing to gallery
-app.post('/drawings-gallery', verifyAuth, (req, res) => {
-    try {
-        const { image } = req.body;
-        const userDrawing = {
-            userId: req.user.token,
-            data: image,
-        };
-        drawings.push(userDrawing);
-        res.status(200).send('Image saved successfully!');
-    } catch (error) {
-        console.error('Error saving image:', error);
-        res.status(500).send('Failed to save image');
-    }
 });
 
 
