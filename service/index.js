@@ -15,7 +15,7 @@ app.use(express.static('public'));
 
 const port = process.argv.length > 2 ? process.argv[2] : 5174; //used to be 3000
 
-const apiRouter = express.Router();
+var apiRouter = express.Router();
 
 //middleware check authentication
 const verifyAuth = (req, res, next) => {

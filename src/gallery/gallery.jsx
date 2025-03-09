@@ -46,7 +46,7 @@ export function Gallery() {
         id="backButton" 
         className="btn btn-outline-primary" 
         onClick={() => navigate('/draw')}>
-        &larr; Back to Drawing
+        &larr; Back to Draw
       </button>
     </main>
   );
