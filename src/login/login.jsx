@@ -34,14 +34,17 @@ export function Login({ onLogin }) {
     if (username.trim() === '') {
       return;
     }
+  
     if (typeof onLogin === 'function') {
-      onLogin(username);
+      onLogin(username);  // Call onLogin with the username as before
     } else {
       console.error('onLogin is not a function');
     }
-    localStorage.setItem('username', username);
-    navigate('/draw');
+  
+    localStorage.setItem('username', username);  // Save the username to localStorage
+    navigate('/draw');  // Navigate to '/draw' after login
   };
+  
 
   return (
     <main>
@@ -83,4 +86,3 @@ export function Login({ onLogin }) {
     </main>
   );
 }
-
