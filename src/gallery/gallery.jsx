@@ -6,14 +6,14 @@ export function Gallery() {
   const navigate = useNavigate();
   const [drawings, setDrawings] = useState([]);
   
-  useEffect(() => {
+  useEffect(()=>{
     const fetchGallery = async () => {
       try {
         const response = await fetch('/api/gallery', {
-          method:'GET',
+          method: 'GET',
           credentials: 'include',
         });
-        if (response.ok) {
+        if (response.ok){
           const data = await response.json();
           setDrawings(data);
         } else {
@@ -24,15 +24,17 @@ export function Gallery() {
       }
     };
     fetchGallery();
-  }, [])
+  }, []);
 
+
+  
   return (
     <main>
       <div className="gallery-grid">
         {drawings.length > 0 ? (
           drawings.map((drawing, index) => (
             <div className="item" key={index}>
-              <img src={drawing.data} alt={`Drawing ${index + 1}`} width="100" />
+              <img src={drawing} alt={`Drawing ${index + 1}`} width="100" />
             </div>
           ))
         ) : (

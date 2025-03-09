@@ -1,5 +1,5 @@
 const cookieParser = require('cookie-parser');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 const express = require('express');
 const uuid = require('uuid');
 const app = express();
@@ -12,6 +12,8 @@ let drawings=[];
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
+
+const port = process.argv.length > 2 ? process.argv[2] : 4000; //used to be 3000
 
 const apiRouter = express.Router();
 
@@ -88,9 +90,6 @@ async function createUser(username){
     return user;
 }
 
-
-
-
 //set auth cookie in the http response
 function setAuthCookie(res, authToken) {
     res.cookie(authCookieName, authToken, {
@@ -101,7 +100,6 @@ function setAuthCookie(res, authToken) {
 }
 
 
-const port = process.argv.length > 2 ? process.argv[2] : 3000;
 //set up api router
 app.use('/api', apiRouter);
 app.listen(port, () => {

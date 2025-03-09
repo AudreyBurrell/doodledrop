@@ -95,20 +95,33 @@ const handleShare = () => {
   }
 };
 //saving to put in gallery
-const handleSaveToGallery = () => {
+const handleSaveToGallery = async () => {
   const canvas = canvasRef.current;
   if (canvas) {
     const dataURL = canvas.toDataURL('image/png');
-    let images = JSON.parse(localStorage.getItem('galleryImages')) || [];
-    images.push(dataURL);
-    localStorage.setItem('galleryImages', JSON.stringify(images));
     
-    // Use a timeout to ensure state is updated before navigation
-    setTimeout(() => {
-      navigate('/gallery');
-    }, 100);
+    try {
+      // Send the image to the backend
+      const response = await fetch('/api/gallery', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: dataURL }),
+      });
+
+      if (response.ok) {
+        console.log('Saved image to gallery!');
+        navigate('/gallery'); // Navigate to the gallery page after saving
+      } else {
+        console.error('Error saving image to gallery');
+      }
+    } catch (err) {
+      console.error('Error:', err); // Corrected the variable name to `err`
+    }
   }
-}
+};
+
 
 return (
 <main>
