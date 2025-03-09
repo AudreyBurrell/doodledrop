@@ -20,13 +20,16 @@ var apiRouter = express.Router();
 
 //Create a new user
 apiRouter.post('/auth/create', async (req, res) => {
-    if (await findUser('username', req.body.username)) {
-        res.status(409).send({ msg: 'Username already taken' });
-    } else {
-        const user = await createUser(req.body.username);
-        setAuthCookie(res, user.token);
-        res.send({ username: user.username });
+    const { username } = req.body;
+    if (!username || username.trim() === ''){
+        return res.status(400).send({ msg:'Username is required' });
     }
+    if (await findUser('username', username)){
+        return res.status(409).send({ msg:'Username already exists' });
+    }
+    const user = await createUser(username);
+    setAuthCookie(res, user.token);
+    res.send({ username: user.username });
 });
 //login existing user
 apiRouter.post('/auth/login', async (req, res) => {
@@ -54,11 +57,9 @@ async function findUser(field, value) {
 }
 //helper function to create a user
 async function createUser(username){
-    const user = {
-        username : username,
-        token: uuid.v4(),
-    };
-    users.push(user);
+    const token = uuid.v4();
+    const user = { username, token };
+    users[username] = user;
     return user;
 }
 
@@ -70,7 +71,6 @@ function setAuthCookie(res, authToken) {
         sameSite:'strict',
     });
 }
-
 
 //set up api router
 app.use('/api', apiRouter);

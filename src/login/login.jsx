@@ -42,32 +42,6 @@ export function Login({ onLogin }) {
     localStorage.setItem('username', username);
     navigate('/draw');
   };
-  const handleRegister = async () => {
-    if (username.trim() ===''){
-      return;
-    }
-    try {
-      const response = await fetch('/api/auth/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type':'application/json',
-        },
-        body: JSON.stringify({ username }),
-      });
-      const result = await response.json();
-      if (response.status === 409) {
-        setError('Username already taken');
-      } else if (response.status === 200){
-        localStorage.setItem('username', username);
-        navigate('/draw');
-      } else {
-        setError('Failed to register user');
-      }
-    } catch (err) {
-      console.error('Registration error:', err);
-      setError('An error occured while registering');
-    }
-  };
 
   return (
     <main>
@@ -91,14 +65,6 @@ export function Login({ onLogin }) {
             disabled={!username.trim()}
           >
             Login &rarr;
-          </button>
-          <button
-            type="button"
-            className="btn btn-outline-success"
-            onClick={handleRegister} 
-            disabled={!username.trim()}
-          >
-            Register &rarr;
           </button>
         </form>
         <div className="weather-info">
