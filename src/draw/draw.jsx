@@ -99,26 +99,22 @@ const handleSaveToGallery = async () => {
   const canvas = canvasRef.current;
   if (canvas) {
     const dataURL = canvas.toDataURL('image/png');
-    
-    try {
-      // Send the image to the backend
-      const response = await fetch('/api/gallery', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: dataURL }),
-      });
-
+    fetch('/api/drawings-gallery', {
+      method:'POST',
+      headers : {'Content-Type' : 'application/json',},
+      body: JSON.stringify({ image: dataURL }),
+    })
+    .then((response) => {
       if (response.ok) {
         console.log('Saved image to gallery!');
-        navigate('/gallery'); // Navigate to the gallery page after saving
+        navigate('/gallery');
       } else {
-        console.error('Error saving image to gallery');
+        console.error('Error saving image to gallery:', response.status);
       }
-    } catch (err) {
-      console.error('Error:', err); // Corrected the variable name to `err`
-    }
+    })
+    .catch((err) => {
+      console.error('Error:', err);
+    });
   }
 };
 

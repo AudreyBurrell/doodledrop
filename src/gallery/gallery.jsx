@@ -6,25 +6,25 @@ export function Gallery() {
   const navigate = useNavigate();
   const [drawings, setDrawings] = useState([]);
   
-  useEffect(()=>{
-    const fetchGallery = async () => {
-      try {
-        const response = await fetch('/api/drawings-gallery', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        if (response.ok){
-          const data = await response.json();
-          setDrawings(data);
-        } else {
-          console.error('Failed to fetch gallery:', response.status);
-        }
-      } catch (error) {
-        console.error('Error fetching gallery:', error);
+  useEffect(() => {
+    fetch('/api/drawings-gallery', {
+      method:'GET',
+      credentials: 'include',
+    })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch gallery');
       }
-    };
-    fetchGallery();
-  }, []);
+    })
+    .then((data) => {
+      setDrawings(data);
+    })
+    .catch((error) => {
+      console.error('Error fetching gallery:', error);
+    });
+  }, [])
 
 
   

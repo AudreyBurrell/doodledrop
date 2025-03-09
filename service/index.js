@@ -60,19 +60,24 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 //get user gallery
 app.get('/drawings-gallery', verifyAuth, (req, res) => {
     const userDrawings = drawings.filter(drawing => drawing.userId === req.user.token);
-    res.json(userDrawings.map(drawing => drawing.data));
+    const imageUrls = userDrawings.map(drawing => drawing.data);
+    res.json(imageUrls);
 })
 //saving drawing to gallery
 app.post('/drawings-gallery', verifyAuth, (req, res) => {
-    const newDrawing = {
-        userId: req.user.token,
-        data: req.body.data,
-        createdAt: new Date(),
-    };
-    drawings.push(newDrawing);
-    res.status(201).send(newDrawing);
+    try {
+        const { image } = req.body;
+        const userDrawing = {
+            userId: req.user.token,
+            data: image,
+        };
+        drawings.push(userDrawing);
+        res.status(200).send('Image saved successfully!');
+    } catch (error) {
+        console.error('Error saving image:', error);
+        res.status(500).send('Failed to save image');
+    }
 });
-
 
 
 //helper function to find user by field
