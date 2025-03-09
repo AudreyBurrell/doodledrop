@@ -43,8 +43,31 @@ export function Login({ onLogin }) {
     navigate('/draw');
   };
   const handleRegister = async () => {
-    handleLogin();
-  }
+    if (username.trim() ===''){
+      return;
+    }
+    try {
+      const response = await fetch('/api/auth/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json',
+        },
+        body: JSON.stringify({ username }),
+      });
+      const result = await response.json();
+      if (response.status === 409) {
+        setError('Username already taken');
+      } else if (response.status === 200){
+        localStorage.setItem('username', username);
+        navigate('/draw');
+      } else {
+        setError('Failed to register user');
+      }
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError('An error occured while registering');
+    }
+  };
 
   return (
     <main>
