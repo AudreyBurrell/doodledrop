@@ -54,14 +54,13 @@ apiRouter.post('/auth/create', (req, res) => {
 // Log in an existing user
 apiRouter.post('/auth/login', (req, res) => {
     const user = findUser('username', req.body.username);
-    if (user) {
-        const sessionToken = uuid.v4(); // Generate a new token for the session
-        user.token = sessionToken;
-        setAuthCookie(res, sessionToken);
-        res.send({ username: user.username });
-    } else {
-        res.status(401).send({ msg: 'Unauthorized' });
+    if (!user) {
+        user = createUser(req.body.username);
     }
+    const sessionToken = uuid.v4();
+    user.token = sessionToken.Token;
+    setAuthCookie(res, sessionToken);
+    res.send ({ username: user.username });
 });
 
 // Log out a user

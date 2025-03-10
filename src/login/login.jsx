@@ -31,18 +31,39 @@ export function Login({ onLogin }) {
   };
 
   const handleLogin = async () => {
-    if (username.trim() === '') {
-      return;
+    try {
+      const response = await fetch('/api/auth/login', {
+        method:'POST',
+        headers: {
+          'Content-Type':'application/json',
+        },
+        body: JSON.stringify({ username }),
+      });
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+      const data = await response.json();
+      if (data.username) {
+        localStorage.setItem('username', data.username);
+        navigate('/draw');
+      }
+    } catch (error) {
+      console.error('Error during login', error);
     }
+
+    // previous code that worked- keep it here just in case
+    // if (username.trim() === '') {
+    //   return;
+    // }
   
-    if (typeof onLogin === 'function') {
-      onLogin(username);  // Call onLogin with the username as before
-    } else {
-      console.error('onLogin is not a function');
-    }
+    // if (typeof onLogin === 'function') {
+    //   onLogin(username);  // Call onLogin with the username as before
+    // } else {
+    //   console.error('onLogin is not a function');
+    // }
   
-    localStorage.setItem('username', username);  // Save the username to localStorage
-    navigate('/draw');  // Navigate to '/draw' after login
+    // localStorage.setItem('username', username);  // Save the username to localStorage
+    // navigate('/draw');  // Navigate to '/draw' after login
   };
   
 
