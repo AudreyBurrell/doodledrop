@@ -35,7 +35,7 @@ export default function App() {
               <li><NavLink to="/" disabled={isLoggedIn}>Home</NavLink></li>
               <li><NavLink to="draw" disabled={!isLoggedIn}>Draw</NavLink></li>
               <li><NavLink to="gallery" disabled={!isLoggedIn}>Gallery</NavLink></li>
-              <li><NavLink to="share" disabled={!isLoggedIn}>Share</NavLink></li>
+              {/* <li><NavLink to="share" disabled={!isLoggedIn}>Share</NavLink></li> */}
             </menu>
           </nav>
           <br />
@@ -50,7 +50,7 @@ export default function App() {
           {/* If not logged in, redirect to Login */}
           <Route path="/draw" element={isLoggedIn ? <Draw /> : <Login onLogin={handleLogin} />} />
           <Route path="/gallery" element={isLoggedIn ? <Gallery /> : <Login onLogin={handleLogin} />} />
-          <Route path="/share" element={isLoggedIn ? <Share /> : <Login onLogin={handleLogin} />} />
+          {/* <Route path="/share" element={isLoggedIn ? <Share /> : <Login onLogin={handleLogin} />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
 

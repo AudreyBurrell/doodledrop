@@ -144,9 +144,9 @@ return (
     <button type="button" className="btn btn-outline-primary" onClick={handleSaveToGallery}>
     Gallery
     </button>
-    <button type="button" className="btn btn-outline-success" onClick={handleShare}>
+    {/* <button type="button" className="btn btn-outline-success" onClick={handleShare}>
     Share
-    </button>
+    </button> */}
   </div>
 </div>
 </main>
