@@ -106,11 +106,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - Created a backend server to handle login/logout and user authentication using Node.js and Express.
+- [x] **Static middleware for frontend** - Served the frontend using Express static middleware
+- [x] **Calls to third party endpoints** - Used 7Weather to get the weather to show up on the login page. I thought this would be funny because people can think "Oh, it's warm outside, I should go out and take a walk or something instead of being on technology."
+- [x] **Backend service endpoints** - Implemented endpoints for user creation, login, and logout with authentication
+- [x] **Frontend calls service endpoints** - Integrated frontend with backedn service endpoints for user authentication.
 
 ## 🚀 DB/Login deliverable
 
