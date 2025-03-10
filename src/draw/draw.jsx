@@ -100,7 +100,7 @@ const handleSaveToGallery = async () => {
   const dataURL = canvas.toDataURL('image/png');
   let images = JSON.parse(localStorage.getItem('galleryImages'))
   images.push(dataURL);
-  localStorage.setItem('gallerImages', JSON.stringify(images));
+  localStorage.setItem('galleryImages', JSON.stringify(images));
   
   setTimeout(() => {
     navigate('/gallery');
