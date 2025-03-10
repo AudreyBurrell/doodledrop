@@ -5,7 +5,6 @@ import './login.css';
 export function Login({ onLogin }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
-  const [isRegistering, setIsRegistering] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -31,26 +30,29 @@ export function Login({ onLogin }) {
   };
 
   const handleLogin = async () => {
+    if (username.trim() === ''){
+      return;
+    }
     try {
       const response = await fetch('/api/auth/login', {
         method:'POST',
-        headers: {
-          'Content-Type':'application/json',
-        },
-        body: JSON.stringify({ username }),
+        headers: { 'Content-Type':'application/json'},
+        body:JSON.stringify({ username }),
+        credentials: 'include',
       });
-      if (!response.ok) {
+      if (!response.ok){
         throw new Error('Login failed');
       }
       const data = await response.json();
       if (data.username) {
         localStorage.setItem('username', data.username);
+        onLogin(data.username);
         navigate('/draw');
       }
     } catch (error) {
-      console.error('Error during login', error);
+      console.error('Error during login:', error);
     }
-
+    
     // previous code that worked- keep it here just in case
     // if (username.trim() === '') {
     //   return;
