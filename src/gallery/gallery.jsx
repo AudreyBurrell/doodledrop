@@ -17,18 +17,35 @@ export function Gallery() {
     };
     fetchUsername();
   });
+  // useEffect(() => {
+  //   // const galleryImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
+  //   // setDrawings(galleryImages);
+  // }, []);
   useEffect(() => {
-    if (username) {
-      const fetchGalleryImages = async () => {
-        const response = await fetch(`/api/gallery?username=${username}`);
-        const images = await response.json();
-        setDrawings(images);
-      };
-      fetchGalleryImages();
-    }
-    // const galleryImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
-    // setDrawings(galleryImages);
-  }, [username]) //username was originally not there
+    const fetchGalleryImages = async () => {
+      const response = await fetch(`/api/auth/check`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+  
+      if (response.status === 200) {
+        const user = await response.json();
+        const { username } = user; // Get the username from the authenticated user
+        const imagesResponse = await fetch(`/api/gallery?username=${username}`, {
+          method: 'GET',
+          credentials: 'include', // Make sure to include credentials here as well
+        });
+        const images = await imagesResponse.json();
+        setDrawings(images); // Set the drawings fetched from the gallery
+      } else {
+        console.error('User is not authenticated');
+        // Handle unauthenticated state (e.g., redirect to login or show a message)
+      }
+    };
+  
+    fetchGalleryImages(); // Call the function once when the component mounts
+  }, []);  // Empty dependency array ensures this runs once when the component mounts
+  
 
 
   //below, src={drawing}
