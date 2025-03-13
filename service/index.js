@@ -73,14 +73,34 @@ apiRouter.delete('/auth/logout', (req, res) => {
 });
 
 // Middleware to verify that the user is authorized to call an endpoint
-app.get('/api/auth/check', async (req,res) => {
-    const token = req.cookies.auth;
-    const user = await DB.getUserByToken(token);
-    if (user) {
-        return res.send({ username: user.username });
+// app.get('/api/auth/check', async (req,res) => {
+//     // const token = req.cookies.auth;
+//     // const user = await DB.getUserByToken(token);
+//     // if (user) {
+//     //     return res.send({ username: user.username });
+//     // }
+//     // res.status(401).send({ msg:'Unauthorized' });
+// });
+// app.get('/api/auth/check', async (req, res) => {
+//     const token = req.cookies.auth;
+//     if (token) {
+//         const user = await DB.getUserByToken(token);
+//         if (user) {
+//             return res.status(200).json({ username: user.username });
+//         }
+//     }
+//     return res.status(401).json({ message: 'Unauthorized' });
+// });
+app.get('/api/auth/check', (req, res) => {
+    if (req.session && req.session.user) {
+        // User is authenticated
+        return res.json({ username: req.session.user.username });
+    } else {
+        // User is not authenticated
+        return res.status(401).json({ message: 'Unauthorized' });
     }
-    res.status(401).send({ msg:'Unauthorized' });
 });
+
 
 //API to save an image (save to gallery)
 apiRouter.post('/gallery/save', (req, res) => {
