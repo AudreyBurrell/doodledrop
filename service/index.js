@@ -18,22 +18,6 @@ var apiRouter = express.Router();
 app.use('/api', apiRouter);
 
 
-
-// Helper function to find a user based on a field and value
-// const findUser = (field, value) => {
-//     if (field === 'username') {
-//         return Object.values(users).find(user => user.username === value);
-//     }
-//     return null; // If the field is not 'username', return null
-// };
-
-// // Helper function to create a new user
-// const createUser = (username) => {
-//     const token = uuid.v4();
-//     users[username] = { username, token };
-//     return users[username];
-// };
-
 // Helper function to set the authentication cookie
 function setAuthCookie(res, token) {
     res.cookie(authCookieName, token, {
@@ -96,6 +80,33 @@ app.get('/api/auth/check', async (req,res) => {
         return res.send({ username: user.username });
     }
     res.status(401).send({ msg:'Unauthorized' });
+});
+
+//API to save an image (save to gallery)
+apiRouter.post('/gallery/save', (req, res) => {
+    const { imageData, usernmae } = req.body;
+    if (!imageData || !username) {
+        return res.status(400).send({ msg: 'Image data nad username are required' });
+    }
+    const imageId = uuid.v4();
+    const filePath = path.join(__dirname, 'images', `${imageId}.png`);
+    const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
+    fs.writeFile(filePath, base64Data, 'base64', (err) => {
+        if (err) {
+            return res.status(500).send({ msg:'Error saving image' });
+        }
+        DB.addImage({ username, imageId, filePath });
+        res.status(200).send({ msg:'Image saved successfully!' });
+    })
+});
+//api to get gallery images
+apiRouter.get('/gallery', async (req, res) => {
+    const { username } = req.query;
+    if (!username) {
+        return res.status(400).send({ msg:'Username is required' });
+    }
+    const images = await DB.getGalleryImages(username);
+    res.status(200).send(images);
 });
 
 
