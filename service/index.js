@@ -84,7 +84,7 @@ app.get('/api/auth/check', async (req,res) => {
 
 //API to save an image (save to gallery)
 apiRouter.post('/gallery/save', (req, res) => {
-    const { imageData, usernmae } = req.body;
+    const { imageData, username } = req.body;
     if (!imageData || !username) {
         return res.status(400).send({ msg: 'Image data nad username are required' });
     }
