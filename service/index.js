@@ -44,17 +44,20 @@ function setAuthCookie(res, token) {
   }
 
 // Create a new user (Sign up)
-apiRouter.post('/auth/create', (req, res) => {
+apiRouter.post('/auth/create', async (req, res) => {
     const { username } = req.body;
     if (!username) {
         return res.status(400).send({ msg: 'Username is required' });
     }
-    if (findUser('username', username)){
-        return res.status(409).send({ msg: 'User already exists' });
+    const existingUser = await DB.getUser(username);
+    if (existingUser) {
+        return res.status(409).send({ msg:'User already exists' });
     }
-    const user = createUser(username);
-    setAuthCookie(res, user.token);
-    res.send({ username: user.username });
+    const token = uuid.v4();
+    const newUser = { username, token };
+    await DB.createUser(newUser);
+    setAuthCookie(res, token);
+    res.send({ username: newUser.username });
 });
 
 // Log in an existing user
