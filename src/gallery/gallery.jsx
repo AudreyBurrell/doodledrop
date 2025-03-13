@@ -7,8 +7,14 @@ export function Gallery() {
   const [drawings, setDrawings] = useState([]);
   
   useEffect(() => {
-    const galleryImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
-    setDrawings(galleryImages);
+    const fetchGalleryImages = async () => {
+      const response = await fetch(`/api/gallery?username=${username}`);
+      const images = await response.json();
+      setDrawings(images);
+    };
+    fetchGalleryImages();
+    // const galleryImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
+    // setDrawings(galleryImages);
   }, [])
 
 
