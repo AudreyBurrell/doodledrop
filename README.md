@@ -116,11 +116,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **User registration** - I did not complete this part of the deliverable.
-- [ ] **User login and logout** - I did not complete this part of the deliverable.
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Restricts functionality based on authentication** - I did not complete this part of the deliverable.
+- [x] **User registration** - Allows the user to create an account. If login info is already being used, doesn't let them create account with that login info
+- [x] **User login and logout** - People can log in and log out
+- [x] **Stores data in MongoDB** - Stores login info in mongo
+- [x] **Stores credentials in MongoDB** - Stores username and token in mongo
+- [x] **Restricts functionality based on authentication** - If people aren't logged in, they can't access the rest of doodledrop. If login info is already in use, they can't use it.
 
 ## 🚀 WebSocket deliverable
 
