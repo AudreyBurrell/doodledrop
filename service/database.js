@@ -5,6 +5,7 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 
 const client = new MongoClient(url);
 const db = client.db('doodledrop');
+const userCollection = db.collection('users');
 
 (async function testConnection() { //this will asynchronously test the connection and test the process if it fails
     try {
@@ -14,4 +15,26 @@ const db = client.db('doodledrop');
       process.exit(1);
     }
   })();
+
+  function getUser(username) {
+    return userCollection.findOne( { username });
+  }
+
+  function updateUser(user) {
+    return userCollection.updateOne({ username: user.username }, { $set: user });
+  }
+
+  function createUser(user) {
+    return userCollection.insertOne(user);
+  }
+  function getUserByToken(token) {
+    return userCollection.findOne({ token });
+  }
+
+  module.exports = {
+    getUser,
+    updateUser,
+    createUser,
+    getUserByToken,
+  }
 

@@ -6,7 +6,7 @@ const DB = require('./database.js')
 
 
 const authCookieName = 'token';
-let users = [];
+// let users = [];
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -20,19 +20,19 @@ app.use('/api', apiRouter);
 
 
 // Helper function to find a user based on a field and value
-const findUser = (field, value) => {
-    if (field === 'username') {
-        return Object.values(users).find(user => user.username === value);
-    }
-    return null; // If the field is not 'username', return null
-};
+// const findUser = (field, value) => {
+//     if (field === 'username') {
+//         return Object.values(users).find(user => user.username === value);
+//     }
+//     return null; // If the field is not 'username', return null
+// };
 
-// Helper function to create a new user
-const createUser = (username) => {
-    const token = uuid.v4();
-    users[username] = { username, token };
-    return users[username];
-};
+// // Helper function to create a new user
+// const createUser = (username) => {
+//     const token = uuid.v4();
+//     users[username] = { username, token };
+//     return users[username];
+// };
 
 // Helper function to set the authentication cookie
 function setAuthCookie(res, token) {
@@ -58,18 +58,23 @@ apiRouter.post('/auth/create', (req, res) => {
 });
 
 // Log in an existing user
-apiRouter.post('/auth/login', (req, res) => {
+apiRouter.post('/auth/login', async (req, res) => {
     const { username } = req.body;
     if (!username) {
-        return res.status(400).send({ msg: 'Username is required' });
+        return res.status(400).send({ msg:'Username is required' });
     }
-    const user = findUser('username',username);
+    const user = await DB.getUser(username);
     if (user) {
         user.token = uuid.v4();
+        await DB.updateUser(user);
         setAuthCookie(res, user.token);
         return res.send({ username: user.username });
     }
-    const newUser = createUser(username);
+    const newUser = {
+        username,
+        token: uuid.v4(),
+    };
+    await DB.createUser(newUser);
     setAuthCookie(res, newUser.token);
     return res.send({ username: newUser.username });
 });
@@ -81,9 +86,9 @@ apiRouter.delete('/auth/logout', (req, res) => {
 });
 
 // Middleware to verify that the user is authorized to call an endpoint
-app.get('/api/auth/check', (req,res) => {
+app.get('/api/auth/check', async (req,res) => {
     const token = req.cookies.auth;
-    const user = Object.values(users).find(user => user.token === token);
+    const user = await DB.getUserByToken(token);
     if (user) {
         return res.send({ username: user.username });
     }
