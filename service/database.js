@@ -6,6 +6,7 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 const client = new MongoClient(url);
 const db = client.db('doodledrop');
 const userCollection = db.collection('users');
+const imagesCollection = db.collection('images');
 
 (async function testConnection() { //this will asynchronously test the connection and test the process if it fails
     try {
@@ -30,11 +31,19 @@ const userCollection = db.collection('users');
   function getUserByToken(token) {
     return userCollection.findOne({ token });
   }
+  function addImage(image) {
+    return imagesCollection.insertOne(image);
+  }
+  function getGalleryImages(username) {
+    return imagesCollection.find({ username }).toArray();
+  }
 
   module.exports = {
     getUser,
     updateUser,
     createUser,
     getUserByToken,
+    addImage,
+    getGalleryImages,
   }
 
