@@ -118,9 +118,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [x] **User registration** - Allows the user to create an account. If login info is already being used, doesn't let them create account with that login info
 - [x] **User login and logout** - People can log in and log out
-- [x] **Stores data in MongoDB** - Stores login info in mongo
-- [x] **Stores credentials in MongoDB** - Stores username and token in mongo
-- [x] **Restricts functionality based on authentication** - If people aren't logged in, they can't access the rest of doodledrop. If login info is already in use, they can't use it.
+- [x] **Stores data in MongoDB** - Stores login info and images in mongo
+- [x] **Stores credentials in MongoDB** - Stores username and token in mongo, along with images that go with the login info
+- [x] **Restricts functionality based on authentication** - If people aren't logged in, they can't access the rest of doodledrop. If login info is already in use, they can't use it. Also, they only see images that were created under that username. (this took absolutely forever to implement. I was so happy when it worked that I jumped and then a chair fell over and scared my roommates. Whoops.)
 
 ## 🚀 WebSocket deliverable
 
