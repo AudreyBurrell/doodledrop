@@ -9,8 +9,11 @@ export function Gallery() {
 
   useEffect(() => { //this entire useEffect is new
     const fetchUsername = async () => {
-      const response = await fetch('/api/auth/check');
-      const data = await response.json;
+      const response = await fetch('/api/auth/check', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      const data = await response.json();
       if (data.username) {
         setUsername(data.username);
       }
@@ -55,7 +58,7 @@ export function Gallery() {
         {drawings.length > 0 ? (
           drawings.map((drawing, index) => (
             <div className="item" key={index}>
-              <img src={drawing.filePath} alt={`Drawing ${index + 1}`} width="100" /> 
+              <img src={drawing.imageData} alt={`Drawing ${index + 1}`} width="100" /> 
             </div>
           ))
         ) : (

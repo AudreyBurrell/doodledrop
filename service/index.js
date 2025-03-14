@@ -95,7 +95,7 @@ apiRouter.post('/gallery/save', async (req, res) => {
     if (!imageData || !username) {
         return res.status(400).json({ message:'Missing image data or username' });
     }
-    const result = await addImage(username, imageData);
+    const result = await DB.addImage(username, imageData);
     res.status(200).send('Image saved successfully');
 });
 //api to get gallery images
