@@ -10,7 +10,8 @@ const authCookieName = 'token';
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
-app.use(express.json());
+app.use(express.json( { limit: '10mb' }));
+app.use(express.urlencoded({ limit:'10mb', extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
 
@@ -20,7 +21,7 @@ app.use('/api', apiRouter);
 
 // Helper function to set the authentication cookie
 function setAuthCookie(res, token) {
-    res.cookie(authCookieName, token, {
+    res.cookie('token', token, { //used to be authCookieName
       secure: true,
       httpOnly: true,
       sameSite: 'strict',
@@ -73,51 +74,29 @@ apiRouter.delete('/auth/logout', (req, res) => {
 });
 
 // Middleware to verify that the user is authorized to call an endpoint
-// app.get('/api/auth/check', async (req,res) => {
-//     // const token = req.cookies.auth;
-//     // const user = await DB.getUserByToken(token);
-//     // if (user) {
-//     //     return res.send({ username: user.username });
-//     // }
-//     // res.status(401).send({ msg:'Unauthorized' });
-// });
-// app.get('/api/auth/check', async (req, res) => {
-//     const token = req.cookies.auth;
-//     if (token) {
-//         const user = await DB.getUserByToken(token);
-//         if (user) {
-//             return res.status(200).json({ username: user.username });
-//         }
-//     }
-//     return res.status(401).json({ message: 'Unauthorized' });
-// });
-app.get('/api/auth/check', (req, res) => {
-    if (req.session && req.session.user) {
-        // User is authenticated
-        return res.json({ username: req.session.user.username });
-    } else {
-        // User is not authenticated
-        return res.status(401).json({ message: 'Unauthorized' });
+app.get('/api/auth/check', async (req,res) => {
+    const token = req.cookies.token;
+    const user = await DB.getUserByToken(token);
+    if (user) {
+        return res.send({ username: user.username });
     }
+    res.status(401).send({ msg:'unauthorized' });
+    // const token = req.cookies.auth;
+    // const user = await DB.getUserByToken(token);
+    // if (user) {
+    //     return res.send({ username: user.username });
+    // }
+    // res.status(401).send({ msg:'Unauthorized' });
 });
 
-
 //API to save an image (save to gallery)
-apiRouter.post('/gallery/save', (req, res) => {
+apiRouter.post('/gallery/save', async (req, res) => {
     const { imageData, username } = req.body;
     if (!imageData || !username) {
-        return res.status(400).send({ msg: 'Image data nad username are required' });
+        return res.status(400).json({ message:'Missing image data or username' });
     }
-    const imageId = uuid.v4();
-    const filePath = path.join(__dirname, 'images', `${imageId}.png`);
-    const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
-    fs.writeFile(filePath, base64Data, 'base64', (err) => {
-        if (err) {
-            return res.status(500).send({ msg:'Error saving image' });
-        }
-        DB.addImage({ username, imageId, filePath });
-        res.status(200).send({ msg:'Image saved successfully!' });
-    })
+    const result = await addImage(username, imageData);
+    res.status(200).send('Image saved successfully');
 });
 //api to get gallery images
 apiRouter.get('/gallery', async (req, res) => {

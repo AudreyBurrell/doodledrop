@@ -31,8 +31,8 @@ const imagesCollection = db.collection('images');
   function getUserByToken(token) {
     return userCollection.findOne({ token });
   }
-  function addImage(image) {
-    return imagesCollection.insertOne(image);
+  async function addImage(username, imageData) {
+    return imagesCollection.insertOne({ username: username, imageData:imageData, createdAt: new Date() });
   }
   function getGalleryImages(username) {
     return imagesCollection.find({ username }).toArray();

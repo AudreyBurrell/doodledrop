@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './draw.css';
@@ -83,28 +82,51 @@ const handleClear = () => {
   ctx.clearRect(0,0, canvas.width, canvas.height); //clear the canvas
 }
 //sharing
-const handleShare = () => {
-  const canvas = canvasRef.current;
-  if (canvas) {
-    const dataURL = canvas.toDataURL('image/png'); // Convert canvas to image URL
-    console.log("Saving image to localStorage:", dataURL); // Debugging log
-    localStorage.setItem('sharedImage', dataURL); // Save to local storage
-    navigate('/share'); // Navigate to Share page
-  } else {
-    console.error('Canvas not found');
-  }
-};
+// const handleShare = () => {
+//   const canvas = canvasRef.current;
+//   if (canvas) {
+//     const dataURL = canvas.toDataURL('image/png'); // Convert canvas to image URL
+//     console.log("Saving image to localStorage:", dataURL); // Debugging log
+//     localStorage.setItem('sharedImage', dataURL); // Save to local storage
+//     navigate('/share'); // Navigate to Share page
+//   } else {
+//     console.error('Canvas not found');
+//   }
+// };
 //saving to put in gallery
 const handleSaveToGallery = async () => {
   const canvas = canvasRef.current;
   const dataURL = canvas.toDataURL('image/png');
-  let images = JSON.parse(localStorage.getItem('galleryImages'))
-  images.push(dataURL);
-  localStorage.setItem('galleryImages', JSON.stringify(images));
-  
-  setTimeout(() => {
-    navigate('/gallery');
-  }, 100)
+  // let images = JSON.parse(localStorage.getItem('galleryImages'))
+  // images.push(dataURL);
+  // localStorage.setItem('galleryImages', JSON.stringify(images));
+  const response = await fetch('/api/auth/check', {
+    method:'GET',
+    credentials: 'include',
+  });
+  const data = await response.json();
+  const username = data.username;
+  const saveResponse = await fetch('/api/gallery/save', {
+    method:'POST',
+    headers: {
+      'Content-Type':'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      imageData: dataURL,
+      username,
+    }),
+  });
+  if (saveResponse.ok) {
+    setTimeout(() => {
+      navigate('/gallery');
+    }, 100);
+  } else {
+    console.error('Failed to save image');
+  }
+  // setTimeout(() => {
+  //   navigate('/gallery');
+  // }, 100)
 
 };
 
