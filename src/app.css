@@ -1,49 +1,49 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.body{
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    background-color:blanchedalmond;
-    color:#333;
-    padding:20px;
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  padding: 20px;
+  line-height: 1.6;
 }
 main {
-    max-width:900px;
-    margin:0 auto;
-    padding:20px;
-    border-radius:8px;
-    box-shadow: 0 4px 8 px rgba(0, 0, 0, 0.1);
+  max-width: 750px; /* Keeps it a bit smaller */
+  margin: 0 auto;
+  padding: 10px 15px 60px;
+  border-radius: 8px;
 }
 h1 {
-    font-size: 2.5em;
-    text-align: center;
-    margin-bottom: 20px;
-    color:rgb(98, 25, 165);
+  font-size: 2.8em;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #6f42c1;
+  font-weight: bold;
 }
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f8f9fa;
-    padding: 5px 10px; /* Reduced padding */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8em; /* Smaller font size */
-  }
-  
-  .logout-button {
-    padding: 8px 12px; /* Smaller padding for the button */
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .logout-button:hover {
-    background-color: #c82333;
-  }
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 5px 10px; /* Matches the original padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7em; /* Matches the original size */
+}
+.logout-button {
+  padding: 8px 12px; /* Matches the original button size */
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.logout-button:hover {
+  background-color: #c82333;
+}
