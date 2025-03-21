@@ -3,9 +3,6 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const DB = require('./database.js')
-const WebSocket = require('ws');
-
-
 
 const authCookieName = 'token';
 // let users = [];
@@ -57,7 +54,6 @@ apiRouter.post('/auth/login', async (req, res) => {
     if (user) {
         user.token = uuid.v4();
         await DB.updateUser(user);
-        await DB.addActiveUser(user.username);
         setAuthCookie(res, user.token);
         return res.send({ username: user.username });
     }
@@ -66,18 +62,12 @@ apiRouter.post('/auth/login', async (req, res) => {
         token: uuid.v4(),
     };
     await DB.createUser(newUser);
-    await DB.addActiveUser(newUser.username);
     setAuthCookie(res, newUser.token);
     return res.send({ username: newUser.username });
 });
 
 // Log out a user
 apiRouter.delete('/auth/logout', async (req, res) => {
-    const token = req.cookies.token;
-    const user = await DB.getUserByToken(token);
-    if (user) {
-        await DB.removeActiveUser(user.username);
-    }
     res.clearCookie(authCookieName);
     res.send({ msg: 'Logged out' });
 });
@@ -133,32 +123,7 @@ apiRouter.get('/gallery', async (req, res) => {
     res.status(200).send(images);
 });
 
-const wss = new WebSocket.Server( { noServer: true });
-wss.on('connection', (ws) => {
-    console.log('New websocket connection')
-    ws.send('Welcome to the Websocket Server!');
-    ws.on('message', (message) => {
-        console.log('Received:', message);
-        wss.clients.forEach(client => {
-            if (client !== wss && client.readyState === WebSocket.OPEN) {
-                client.send(message);
-            }
-        });
-    });
-    ws.on('close', () => {
-        console.log('Websocket connection closed');
-    });
-});
 
-app.server = app.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-app.server.on('upgrade', (request, socket, head) => {
-    wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit('connection', ws, request);
-    });
-});
-
-// app.listen(port, () => {
-//     console.log(`Server is running on port ${port}`);
-// });

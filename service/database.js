@@ -7,6 +7,7 @@ const client = new MongoClient(url);
 const db = client.db('doodledrop');
 const userCollection = db.collection('users');
 const imagesCollection = db.collection('images');
+const activeUsersCollection = db.collection('activeUsers');
 
 (async function testConnection() { //this will asynchronously test the connection and test the process if it fails
     try {
