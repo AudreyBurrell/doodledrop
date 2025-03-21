@@ -1,7 +1,6 @@
 const { WebSocketServer } = require('ws');
 const wss = new WebSocketServer({ noServer: true });
 
-
 let activeUsers = new Set();
 
 wss.on('connection', (ws) => {

@@ -13,7 +13,7 @@ export function Login({ onLogin }) {
 
   useEffect(() => {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    const socket = new WebSocket(`${protocol}://${window.location.host}`);
 
     socket.onopen = () => {
       console.log('WebSocket connection established');
