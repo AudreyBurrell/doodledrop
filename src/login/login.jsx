@@ -9,12 +9,13 @@ export function Login({ onLogin }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeUsers, setActiveUsers] = useState([]);
-  // const [ws, setWs] = useState(null);
+  //const [ws, setWs] = useState(null);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const newSocket = new WebSocket(`${protocol}://${window.location.hostname}/ws`);
+    const newSocket = new WebSocket(`${protocol}://${window.location.host}`);
+
     setSocket(newSocket);
       newSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
