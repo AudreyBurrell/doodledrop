@@ -22,7 +22,8 @@ export function Login({ onLogin }) {
     socket.onopen = () => {
       console.log('WebSocket connection established');
       // Send a message to the server once the connection is open
-      socket.send(JSON.stringify({ 'type': 'login', "username": "" }));
+      // socket.send(JSON.stringify({ type: 'login', username: '' }));
+      // socket.send(JSON.stringify({ 'type': 'login', "username": "" }));
     };
   
     socket.onmessage = (event) => {
