@@ -126,39 +126,33 @@ apiRouter.get('/active-users', (req, res) => {
     res.status(200).json(Array.from(activeUsers));
 });
 
-wss.on('connection', (ws) => {
-    console.log('Client connected');
-    server.on('message', (message) => {
-        console.log(`Received message: ${message}`);
-        if (message === 'login') {
-            const username = ws.username;
-            activeUsers.add(username);
-            broadcastActiveUsers();
-        } else if (message === 'logout') {
-            const username = ws.username;
-            activeUsers.delete(username);
-            broadcastActiveUsers();
-        }
-    });
-    server.on('close', () => {
-        console.log('Client disconnected');
-    });
-    
-})
-
 const server = http.createServer(app);
 
 server.on('upgrade', (request, socket, head) => {
-    console.log('Upgrade request received');
     wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit('connection', ws, request);
-        console.log('WebSocket connection established');
+      wss.emit('connection', ws, request);
+    });
+  });  
+
+
+// WebSocket connection logic
+wss.on('connection', (ws) => {
+    console.log('New WebSocket connection');
+    
+    ws.on('message', (data) => {
+        console.log('Received message:', data);
+        // Respond to the client, or broadcast the message
+        ws.send('Message received: ' + data);
+    });
+
+    ws.on('close', () => {
+        console.log('WebSocket connection closed');
     });
 });
 
-
+// Start HTTP server
 server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    console.log(`Server running at port: ${port}`);
 });
 
 
