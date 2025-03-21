@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 
@@ -9,25 +9,25 @@ export function Login({ onLogin }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeUsers, setActiveUsers] = useState([]);
-  //const [ws, setWs] = useState(null);
-  const [socket, setSocket] = useState(null);
+  // //const [ws, setWs] = useState(null);
+  // const [socket, setSocket] = useState(null);
+
+  const socketRef = useRef(null);
 
   useEffect(() => {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const newSocket = new WebSocket(`${protocol}://${window.location.host}`);
-
-    setSocket(newSocket);
-      newSocket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        setActiveUsers(data);
-      };
-      newSocket.onopen = () => {
-        console.log('Websocket connection established')
-      };
-      newSocket.onclose = () => {
-        console.log('Websocket connection closed');
-      };
-    
+    socketRef.current = new WebSocket(`${protocol}://${window.location.host}`);
+    socketRef.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setActiveUsers(data);
+    }
+    socketRef.current.onopen = () => console.log('Websocket connected established');
+    socketRef.current.onclose = () => console.log('Websocket connection closed');
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.close();
+      }
+    }
   }, []);
   useEffect(() => {
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
@@ -68,7 +68,12 @@ export function Login({ onLogin }) {
         localStorage.setItem('username', data.username);
         onLogin(data.username);
         navigate('/draw');
+        //send websocket info
+        if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+          socketRef.current.send(JSON.stringify({ type: 'login', username: data.username }));
+        }
       }
+
     } catch (error) {
       console.error('Error during login:', error);
     }
