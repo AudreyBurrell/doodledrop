@@ -9,24 +9,33 @@ wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         console.log(`Received message: ${message}`);
         if (message === 'login') {
-            const username = ws.username;
-            activeUsers.add(username);
+            ws.username = data.username;
+            activeUsers.add(data.username);
             broadcastActiveUsers();
         } else if (message === 'logout') {
-            const username = ws.username;
-            activeUsers.delete(username);
+            activeUsers.delete(ws.username);
             broadcastActiveUsers();
         }
     });
     ws.on('close', () => {
+        if (ws.username) {
+            activeUsers.delete(ws.username);
+            broadcastActiveUsers();
+        }
         console.log('Client disconnected');
     });
 });
 
 function broadcastActiveUsers() {
+    const userList = JSON.stringify(Array.from(activeUsers));
     wss.clients.forEach((client) => {
-        client.send(JSON.stinrify(Array.from(activeUsers)));
+        if (client.readyState === 1) {
+            client.send(userList);
+        }
     });
+    // wss.clients.forEach((client) => {
+    //     client.send(JSON.stringify(Array.from(activeUsers)));
+    // });
 }
 
 module.exports = wss;

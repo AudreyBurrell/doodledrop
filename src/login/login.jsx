@@ -12,24 +12,31 @@ export function Login({ onLogin }) {
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    setWs(ws);
-    if (ws) {
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        setActiveUsers(data);
-      };
-      ws.onopen = () => {
-        console.log('Websocket connection established')
-      };
-      ws.onclose = () => {
-        console.log('Websocket connection closed');
-      };
-    }
-    
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
+    socket.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log('Active users:', data);
+      setActiveUsers(data); // Update active users list
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    setWs(socket); // Save socket to state if needed
+
     return () => {
-      if (ws) {
-        ws.close();
-      }  
+      socket.close();
     };
   }, []);
   useEffect(() => {
