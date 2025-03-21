@@ -23,6 +23,8 @@ export function Login({ onLogin }) {
     }
     socketRef.current.onopen = () => console.log('Websocket connected established');
     socketRef.current.onclose = () => console.log('Websocket connection closed');
+    socketRef.current.onerror = (error) => console.error('WebSocket error:', error);
+
     return () => {
       if (socketRef.current) {
         socketRef.current.close();
