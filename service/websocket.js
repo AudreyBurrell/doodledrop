@@ -7,14 +7,13 @@ wss.on('connection', (ws) => {
     console.log('Client connected');
     ws.on('message', (message) => {
         console.log(`Received message: ${message}`);
+        const data = JSON.parse(message);
         if (message === 'login') {
-            ws.username = data.username;
             activeUsers.add(data.username);
-            broadcastActiveUsers();
         } else if (message === 'logout') {
             activeUsers.delete(ws.username);
-            broadcastActiveUsers();
         }
+        broadcastActiveUsers();
     });
     ws.on('close', () => {
         if (ws.username) {
@@ -28,7 +27,7 @@ wss.on('connection', (ws) => {
 function broadcastActiveUsers() {
     const userList = JSON.stringify(Array.from(activeUsers));
     wss.clients.forEach((client) => {
-        if (client.readyState === 1) {
+        if (client.readyState === WebSocket.OPEN) {
             client.send(userList);
         }
     });

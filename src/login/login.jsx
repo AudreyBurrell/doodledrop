@@ -19,7 +19,9 @@ export function Login({ onLogin }) {
     socketRef.current = new WebSocket(`${protocol}://${window.location.host}`);
     socketRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setActiveUsers(data);
+      if (Array.isArray(data)){
+        setActiveUsers(data);
+      }
     }
     socketRef.current.onopen = () => console.log('Websocket connected established');
     socketRef.current.onclose = () => console.log('Websocket connection closed');

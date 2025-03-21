@@ -74,11 +74,14 @@ apiRouter.post('/auth/login', async (req, res) => {
 // Log out a user
 apiRouter.delete('/auth/logout', async (req, res) => {
     const username = req.body.username;
-    activeUsers.delete(username);
+    if (username) {
+        activeUsers.delete(username);
+        broadcastActiveUsers();
+    }
     res.clearCookie(authCookieName);
-    wss.clients.forEach((client) => {
-        client.send('logout');
-    });
+    // wss.clients.forEach((client) => {
+    //     client.send('logout');
+    // });
     res.send({ msg: 'Logged out' });
 });
 
@@ -126,7 +129,7 @@ apiRouter.get('/active-users', (req, res) => {
 const server = http.createServer(app);
 wss.on('connection', (ws) => {
     console.log('Client connected');
-    ws.on('message', (message) => {
+    server.on('message', (message) => {
         console.log(`Received message: ${message}`);
         if (message === 'login') {
             const username = ws.username;
@@ -138,13 +141,14 @@ wss.on('connection', (ws) => {
             broadcastActiveUsers();
         }
     });
-    ws.on('close', () => {
+    server.on('close', () => {
         console.log('Client disconnected');
     });
+    server.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
 })
-// server.listen(port, () => {
-//     console.log(`Server is running on port ${port}`);
-// });
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
