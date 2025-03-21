@@ -8,21 +8,26 @@ export function Login({ onLogin }) {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeUsers, setActiveUsers] = useState([])
-
+  const [activeUsers, setActiveUsers] = useState([]);
+  const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    const fetchActiveUsers = async () => {
-      try {
-        const response = await fetch ('/api/active-users');
-        const users = await response.json();
-        setActiveUsers(users);
-      } catch {
-        console.error('Error fetching active users:', error);
-      }
+    setWs(ws);
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setActiveUsers(data);
     };
-    fetchActiveUsers();
-    //
+    ws.onopen = () => {
+      console.log('Websocket connection established')
+    };
+    ws.onclose = () => {
+      console.log('Websocket connection closed');
+    };
+    return () => {
+      ws.close();
+    };
+  }, []);
+  useEffect(() => {
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
       .then ((response) => response.json())
       .then((data) => {
