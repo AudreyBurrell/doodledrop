@@ -126,7 +126,6 @@ apiRouter.get('/active-users', (req, res) => {
     res.status(200).json(Array.from(activeUsers));
 });
 
-const server = http.createServer(app);
 wss.on('connection', (ws) => {
     console.log('Client connected');
     server.on('message', (message) => {
@@ -144,12 +143,22 @@ wss.on('connection', (ws) => {
     server.on('close', () => {
         console.log('Client disconnected');
     });
-    server.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
-    });
+    
 })
 
+const server = http.createServer(app);
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+server.on('upgrade', (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit('connection', ws, request);
+  });
 });
+
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+
+// app.listen(port, () => {
+//     console.log(`Server is running on port ${port}`);
+// });

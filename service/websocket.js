@@ -8,13 +8,14 @@ wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         console.log(`Received message: ${message}`);
         const data = JSON.parse(message);
-        if (message === 'login') {
-            activeUsers.add(data.username);
-        } else if (message === 'logout') {
-            activeUsers.delete(ws.username);
+        if (data.type === 'login') {
+          activeUsers.add(data.username);
+          broadcastActiveUsers();
+        } else if (data.type === 'logout') {
+          activeUsers.delete(data.username);
+          broadcastActiveUsers();
         }
-        broadcastActiveUsers();
-    });
+      });      
     ws.on('close', () => {
         if (ws.username) {
             activeUsers.delete(ws.username);
