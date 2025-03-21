@@ -6,6 +6,7 @@ const DB = require('./database.js')
 const WebSocket = require('ws');
 
 
+
 const authCookieName = 'token';
 // let users = [];
 
@@ -110,6 +111,16 @@ apiRouter.post('/gallery/save', async (req, res) => {
         return res.status(400).json({ message:'Missing image data or username' });
     }
     const result = await DB.addImage(username, imageData);
+    const message = JSON.stringify({
+        type: 'new-image',
+        username: username,
+        imageData: imageData,
+    });
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(message);
+        }
+    });
     res.status(200).send('Image saved successfully');
 });
 //api to get gallery images
@@ -122,8 +133,32 @@ apiRouter.get('/gallery', async (req, res) => {
     res.status(200).send(images);
 });
 
+const wss = new WebSocket.Server( { noServer: true });
+wss.on('connection', (ws) => {
+    console.log('New websocket connection')
+    ws.send('Welcome to the Websocket Server!');
+    ws.on('message', (message) => {
+        console.log('Received:', message);
+        wss.clients.forEach(client => {
+            if (client !== wss && client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        });
+    });
+    ws.on('close', () => {
+        console.log('Websocket connection closed');
+    });
+});
 
-
-app.listen(port, () => {
+app.server = app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+app.server.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
+    });
+});
+
+// app.listen(port, () => {
+//     console.log(`Server is running on port ${port}`);
+// });
