@@ -12,29 +12,26 @@ export function Login({ onLogin }) {
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    if (!ws) {
-      const websocket = new WebSocket('ws://localhost:4000'); // Update with your WebSocket URL
-      setWs(websocket); // Store the WebSocket in the state
-
-      websocket.onopen = () => {
-        console.log('WebSocket connection established');
-      };
-
-      websocket.onmessage = (event) => {
+    setWs(ws);
+    if (ws) {
+      ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        setActiveUsers(data); // Update active users when new data is received
+        setActiveUsers(data);
       };
-
-      websocket.onclose = () => {
-        console.log('WebSocket connection closed');
+      ws.onopen = () => {
+        console.log('Websocket connection established')
       };
-
-      // Cleanup WebSocket on component unmount
-      return () => {
-        websocket.close();
+      ws.onclose = () => {
+        console.log('Websocket connection closed');
       };
     }
-  }, [ws]);
+    
+    return () => {
+      if (ws) {
+        ws.close();
+      }  
+    };
+  }, []);
   useEffect(() => {
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
       .then ((response) => response.json())
