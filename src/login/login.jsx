@@ -16,8 +16,10 @@ export function Login({ onLogin }) {
 
   useEffect(() => {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    socketRef.current = new WebSocket(`${protocol}://${window.location.host}`);
-    socketRef.current.onmessage = (event) => {
+    const socket = new WebSocket(`${protocol}://${window.location.host}`);
+    console.log('Connecting to websocket server at:', window.location.host);
+    socket.onmessage = (event) => {
+      console.log('Received message from websocket server:', event.data);
       const data = JSON.parse(event.data);
       if (Array.isArray(data)){
         setActiveUsers(data);

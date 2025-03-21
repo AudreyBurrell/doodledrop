@@ -149,10 +149,13 @@ wss.on('connection', (ws) => {
 const server = http.createServer(app);
 
 server.on('upgrade', (request, socket, head) => {
-  wss.handleUpgrade(request, socket, head, (ws) => {
-    wss.emit('connection', ws, request);
-  });
+    console.log('Upgrade request received');
+    wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
+        console.log('WebSocket connection established');
+    });
 });
+
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);

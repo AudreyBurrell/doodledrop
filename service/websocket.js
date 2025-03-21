@@ -1,5 +1,5 @@
-const { WebSocketServer } = require('ws');
-const wss = new WebSocketServer({ noServer: true });
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port:4000 });
 
 let activeUsers = new Set();
 
