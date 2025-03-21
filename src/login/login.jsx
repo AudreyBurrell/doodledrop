@@ -22,15 +22,17 @@ export function Login({ onLogin }) {
     socket.onopen = () => {
       console.log('WebSocket connection established');
       // Send a message to the server once the connection is open
-      socket.send(JSON.stringify({ type: 'login', username: username }));
+      socket.send(JSON.stringify({ 'type': 'login', "username": "" }));
     };
   
     socket.onmessage = (event) => {
-      console.log('Received message from websocket server:', event.data);
-      const data = JSON.parse(event.data);
-      if (Array.isArray(data)) {
-        setActiveUsers(data);
+      try {
+        const message = JSON.parse(event.data);
+        console.log('Received message:', message);
+      } catch (e) {
+        console.error('Invalid JSON received:', event.data);
       }
+      
     };
   
     socket.onerror = (error) => {
