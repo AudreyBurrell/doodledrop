@@ -53,19 +53,6 @@ export function Login({ onLogin }) {
       console.error('Error during login:', error);
     }
     
-    // previous code that worked- keep it here just in case
-    // if (username.trim() === '') {
-    //   return;
-    // }
-  
-    // if (typeof onLogin === 'function') {
-    //   onLogin(username);  // Call onLogin with the username as before
-    // } else {
-    //   console.error('onLogin is not a function');
-    // }
-  
-    // localStorage.setItem('username', username);  // Save the username to localStorage
-    // navigate('/draw');  // Navigate to '/draw' after login
   };
   
 
