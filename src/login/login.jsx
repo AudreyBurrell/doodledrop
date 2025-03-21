@@ -14,7 +14,7 @@ export function Login({ onLogin }) {
 
   useEffect(() => {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const newSocket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    const newSocket = new WebSocket(`${protocol}://${window.location.hostname}/ws`);
     setSocket(newSocket);
       newSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
