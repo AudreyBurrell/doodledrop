@@ -5,7 +5,7 @@ const uuid = require('uuid');
 const DB = require('./database.js')
 
 const authCookieName = 'token';
-// let users = [];
+const activeUsers = new Set();
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -55,6 +55,7 @@ apiRouter.post('/auth/login', async (req, res) => {
         user.token = uuid.v4();
         await DB.updateUser(user);
         setAuthCookie(res, user.token);
+        activeUsers.add(user.username);
         return res.send({ username: user.username });
     }
     const newUser = {
@@ -63,6 +64,7 @@ apiRouter.post('/auth/login', async (req, res) => {
     };
     await DB.createUser(newUser);
     setAuthCookie(res, newUser.token);
+    activeUsers.add(newUser.username);
     return res.send({ username: newUser.username });
 });
 
@@ -70,13 +72,12 @@ apiRouter.post('/auth/login', async (req, res) => {
 apiRouter.delete('/auth/logout', async (req, res) => {
     res.clearCookie(authCookieName);
     res.send({ msg: 'Logged out' });
+    activeUsers.delete(user.username);
 });
-
-//api to get active users
-apiRouter.get('/auth/active-users', async (req, res) => {
-    const activeUsers = await DB.getActiveUsers();
-    res.send({ activeUsers });
-})
+//getting active users
+apiRouter.get('/active-users', (req, res) => {
+    res.send(Array.from(activeUsers));
+});
 
 // Middleware to verify that the user is authorized to call an endpoint
 app.get('/api/auth/check', async (req,res) => {
@@ -101,16 +102,6 @@ apiRouter.post('/gallery/save', async (req, res) => {
         return res.status(400).json({ message:'Missing image data or username' });
     }
     const result = await DB.addImage(username, imageData);
-    const message = JSON.stringify({
-        type: 'new-image',
-        username: username,
-        imageData: imageData,
-    });
-    wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(message);
-        }
-    });
     res.status(200).send('Image saved successfully');
 });
 //api to get gallery images

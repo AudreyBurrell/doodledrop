@@ -8,8 +8,21 @@ export function Login({ onLogin }) {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeUsers, setActiveUsers] = useState([])
+
 
   useEffect(() => {
+    const fetchActiveUsers = async () => {
+      try {
+        const response = await fetch ('/api/active-users');
+        const users = await response.json();
+        setActiveUsers(users);
+      } catch {
+        console.error('Error fetching active users:', error);
+      }
+    };
+    fetchActiveUsers();
+    //
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
       .then ((response) => response.json())
       .then((data) => {
@@ -80,6 +93,20 @@ export function Login({ onLogin }) {
             Login &rarr;
           </button>
         </form>
+
+        <div className="active-users">
+          <h2>Currently Active Users:</h2>
+          {activeUsers.length === 0 ? (
+            <p>No one is currently using DoodleDrop.</p>
+          ) : (
+            <ul>
+              {activeUsers.map((user, index) => (
+                <li key={index}>{user}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+
         <div className="weather-info">
           {loading && <p>Loading weather...</p>}
           {error && <p>Error fetching weather data: {error} </p>}
