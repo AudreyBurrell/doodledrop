@@ -11,7 +11,7 @@ export function Login({ onLogin }) {
   const [activeUsers, setActiveUsers] = useState([]);
   // //const [ws, setWs] = useState(null);
   // const [socket, setSocket] = useState(null);
-
+    
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -39,11 +39,6 @@ export function Login({ onLogin }) {
     socket.onerror = (error) => {
       console.error('WebSocket error:', error);
     };
-  
-    socket.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
-  
     socketRef.current = socket;
   
     // Check WebSocket connection status
@@ -61,28 +56,6 @@ export function Login({ onLogin }) {
       socket.close();
     };
   }, []);
-
-  // useEffect(() => {
-  //   const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-  //   const socket = new WebSocket(`${protocol}://${window.location.host}`);
-  //   console.log('Connecting to websocket server at:', window.location.host);
-  //   socket.onmessage = (event) => {
-  //     console.log('Received message from websocket server:', event.data);
-  //     const data = JSON.parse(event.data);
-  //     if (Array.isArray(data)){
-  //       setActiveUsers(data);
-  //     }
-  //   }
-  //   socket.onopen = () => console.log('Websocket connected established');
-  //   socket.onclose = () => console.log('Websocket connection closed');
-  //   socket.onerror = (error) => console.error('WebSocket error:', error);
-
-  //   return () => {
-  //     if (socket) {
-  //       socket.close();
-  //     }
-  //   }
-  // }, []);
   useEffect(() => {
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
       .then ((response) => response.json())
