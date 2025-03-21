@@ -5,9 +5,9 @@ const uuid = require('uuid');
 const DB = require('./database.js')
 
 const authCookieName = 'token';
-const activeUsers = new Set();
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
+
 
 app.use(express.json( { limit: '10mb' }));
 app.use(express.urlencoded({ limit:'10mb', extended: true }));
@@ -55,7 +55,6 @@ apiRouter.post('/auth/login', async (req, res) => {
         user.token = uuid.v4();
         await DB.updateUser(user);
         setAuthCookie(res, user.token);
-        activeUsers.add(user.username);
         return res.send({ username: user.username });
     }
     const newUser = {
@@ -64,20 +63,17 @@ apiRouter.post('/auth/login', async (req, res) => {
     };
     await DB.createUser(newUser);
     setAuthCookie(res, newUser.token);
-    activeUsers.add(newUser.username);
     return res.send({ username: newUser.username });
 });
 
 // Log out a user
 apiRouter.delete('/auth/logout', async (req, res) => {
     res.clearCookie(authCookieName);
-    res.send({ msg: 'Logged out' });
     activeUsers.delete(user.username);
+    res.send({ msg: 'Logged out' });
 });
-//getting active users
-apiRouter.get('/active-users', (req, res) => {
-    res.send(Array.from(activeUsers));
-});
+
+
 
 // Middleware to verify that the user is authorized to call an endpoint
 app.get('/api/auth/check', async (req,res) => {
