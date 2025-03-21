@@ -3,6 +3,7 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const DB = require('./database.js')
+const WebSocket = require('ws');
 
 
 const authCookieName = 'token';
@@ -55,6 +56,7 @@ apiRouter.post('/auth/login', async (req, res) => {
     if (user) {
         user.token = uuid.v4();
         await DB.updateUser(user);
+        await DB.addActiveUser(user.username);
         setAuthCookie(res, user.token);
         return res.send({ username: user.username });
     }
@@ -63,15 +65,27 @@ apiRouter.post('/auth/login', async (req, res) => {
         token: uuid.v4(),
     };
     await DB.createUser(newUser);
+    await DB.addActiveUser(newUser.username);
     setAuthCookie(res, newUser.token);
     return res.send({ username: newUser.username });
 });
 
 // Log out a user
-apiRouter.delete('/auth/logout', (req, res) => {
+apiRouter.delete('/auth/logout', async (req, res) => {
+    const token = req.cookies.token;
+    const user = await DB.getUserByToken(token);
+    if (user) {
+        await DB.removeActiveUser(user.username);
+    }
     res.clearCookie(authCookieName);
-    res.send({ msg:'Logged out' });
+    res.send({ msg: 'Logged out' });
 });
+
+//api to get active users
+apiRouter.get('/auth/active-users', async (req, res) => {
+    const activeUsers = await DB.getActiveUsers();
+    res.send({ activeUsers });
+})
 
 // Middleware to verify that the user is authorized to call an endpoint
 app.get('/api/auth/check', async (req,res) => {
@@ -107,6 +121,7 @@ apiRouter.get('/gallery', async (req, res) => {
     const images = await DB.getGalleryImages(username);
     res.status(200).send(images);
 });
+
 
 
 app.listen(port, () => {
