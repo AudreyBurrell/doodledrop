@@ -16,7 +16,7 @@ export function Login({ onLogin }) {
 
   useEffect(() => {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://localhost:4000`);
+    const socket = new WebSocket(`${protocol}://startup.260project.click`);
     console.log('Connecting to websocket server at:', window.location.host);
 
     console.log('Connecting to websocket server at:', window.location.host);

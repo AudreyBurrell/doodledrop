@@ -136,19 +136,19 @@ server.on('upgrade', (request, socket, head) => {
 
 
 // WebSocket connection logic
-wss.on('connection', (ws) => {
-    console.log('New WebSocket connection');
+// wss.on('connection', (ws) => {
+//     console.log('New WebSocket connection');
     
-    ws.on('message', (data) => {
-        console.log('Received message:', data);
-        // Respond to the client, or broadcast the message
-        ws.send('Message received: ' + data);
-    });
+//     ws.on('message', (data) => {
+//         console.log('Received message:', data);
+//         // Respond to the client, or broadcast the message
+//         ws.send('Message received: ' + data);
+//     });
 
-    ws.on('close', () => {
-        console.log('WebSocket connection closed');
-    });
-});
+//     ws.on('close', () => {
+//         console.log('WebSocket connection closed');
+//     });
+// });
 
 // Start HTTP server
 server.listen(port, () => {
