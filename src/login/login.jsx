@@ -18,6 +18,8 @@ export function Login({ onLogin }) {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
     const socket = new WebSocket(`${protocol}://localhost:4000`);
     console.log('Connecting to websocket server at:', window.location.host);
+
+    console.log('Connecting to websocket server at:', window.location.host);
   
     socket.onopen = () => {
       console.log('WebSocket connection established');
@@ -39,22 +41,27 @@ export function Login({ onLogin }) {
     socket.onerror = (error) => {
       console.error('WebSocket error:', error);
     };
+
+    socket.onclose = () => {
+      console.log('Websocket connection closed')
+    };
     socketRef.current = socket;
   
     // Check WebSocket connection status
-    const checkWebSocketStatus = () => {
-      if (socket.readyState === WebSocket.OPEN) {
-        console.log('WebSocket is connected');
-      } else {
-        console.log('WebSocket is not connected');
-      }
-    };
+    // const checkWebSocketStatus = () => {
+    //   if (socket.readyState === WebSocket.OPEN) {
+    //     console.log('WebSocket is connected');
+    //   } else {
+    //     console.log('WebSocket is not connected');
+    //   }
+    // };
   
-    setInterval(checkWebSocketStatus, 1000); // Check every second
+    // setInterval(checkWebSocketStatus, 1000); // Check every second
   
     return () => {
       socket.close();
     };
+    
   }, []);
   useEffect(() => {
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
