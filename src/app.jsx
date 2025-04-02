@@ -14,9 +14,9 @@ export default function App() {
   const socketRef = useRef(null); 
   useEffect(()=> {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://localhost:5173`) //change this to localhost:5143 when redoing code and npm run dev stuff
+    const socket = new WebSocket(`${protocol}://startup.260project.click`) //change this to localhost:5173 or startup.260project.click when redoing code and npm run dev stuff
     console.log('Connecting to WebSocket server at:', window.location.host);
-    
+
     socket.onopen = () => {
       console.log('WebSocket connection established!');
     };
