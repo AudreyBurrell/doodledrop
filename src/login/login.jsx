@@ -12,57 +12,43 @@ export function Login({ onLogin }) {
   // //const [ws, setWs] = useState(null);
   // const [socket, setSocket] = useState(null);
     
-  const socketRef = useRef(null);
+  // const socketRef = useRef(null);
 
-  useEffect(() => {
-    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://startup.260project.click`);
-    console.log('Connecting to websocket server at:', window.location.host);
+  // useEffect(() => {
+  //   const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  //   const socket = new WebSocket(`${protocol}://localhost:5173`); //startup.260project.click
+  //   console.log('Connecting to websocket server at:', window.location.host);
 
-    console.log('Connecting to websocket server at:', window.location.host);
+  //   console.log('Connecting to websocket server at:', window.location.host);
   
-    socket.onopen = () => {
-      console.log('WebSocket connection established');
-      // Send a message to the server once the connection is open
-      // socket.send(JSON.stringify({ type: 'login', username: '' }));
-      // socket.send(JSON.stringify({ 'type': 'login', "username": "" }));
-    };
+  //   socket.onopen = () => {
+  //     console.log('WebSocket connection established');
+  //   };
   
-    socket.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data);
-        console.log('Received message:', message);
-      } catch (e) {
-        console.error('Invalid JSON received:', event.data);
-      }
+  //   socket.onmessage = (event) => {
+  //     try {
+  //       const message = JSON.parse(event.data);
+  //       console.log('Received message:', message);
+  //     } catch (e) {
+  //       console.error('Invalid JSON received:', event.data);
+  //     }
       
-    };
+  //   };
   
-    socket.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
+  //   socket.onerror = (error) => {
+  //     console.error('WebSocket error:', error);
+  //   };
 
-    socket.onclose = () => {
-      console.log('Websocket connection closed')
-    };
-    socketRef.current = socket;
+  //   socket.onclose = () => {
+  //     console.log('Websocket connection closed')
+  //   };
+  //   socketRef.current = socket;
   
-    // Check WebSocket connection status
-    // const checkWebSocketStatus = () => {
-    //   if (socket.readyState === WebSocket.OPEN) {
-    //     console.log('WebSocket is connected');
-    //   } else {
-    //     console.log('WebSocket is not connected');
-    //   }
-    // };
-  
-    // setInterval(checkWebSocketStatus, 1000); // Check every second
-  
-    return () => {
-      socket.close();
-    };
+  //   return () => {
+  //     socket.close();
+  //   };
     
-  }, []);
+  // }, []);
   useEffect(() => {
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
       .then ((response) => response.json())

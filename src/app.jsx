@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; //added useEffect and useRef
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom'; 
 import { Login } from './login/login';
 import { Gallery } from './gallery/gallery';
 import { Draw } from './draw/draw';
@@ -10,6 +10,33 @@ import { Share } from './share/share';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const socketRef = useRef(null); //added this and the useEffect below
+  useEffect(()=> {
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    const socket = new WebSocket(`${protocol}://localhost:5173`)
+    console.log('Connecting to WebSocket server at:', window.location.host);
+    socket.onopen = () => {
+      console.log('WebSocket connection established!');
+    };
+    socket.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        console.log('Received message:', message);
+      } catch(e) {
+        console.error('Invalid JSON received:', event.data);
+      }
+    };
+    socket.onerror = (error) => {
+      console.error('Websocket error:', error);
+    };
+    socket.onclose = () => {
+      console.log('Websocket connection closed');
+    };
+    socketRef.current = socket;
+    return () => {
+      socket.close();
+    }; 
+  }, []);
 
   // Define the onLogin function that updates the loggedIn state
   const handleLogin = (username) => {
