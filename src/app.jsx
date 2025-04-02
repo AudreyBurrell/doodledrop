@@ -63,6 +63,7 @@ export default function App() {
   // Define the handleLogout function
   const handleLogout = () => {
     setIsLoggedIn(false);
+    console.log('user successfully logged out!')
     //adding this below
     // socketRef.current?.send(JSON.stringify({ type: 'logout' }));
     if (socketRef.current?.readyState === WebSocket.OPEN) {
