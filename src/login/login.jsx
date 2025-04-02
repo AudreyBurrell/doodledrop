@@ -9,46 +9,7 @@ export function Login({ onLogin }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeUsers, setActiveUsers] = useState([]);
-  // //const [ws, setWs] = useState(null);
-  // const [socket, setSocket] = useState(null);
-    
-  // const socketRef = useRef(null);
 
-  // useEffect(() => {
-  //   const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-  //   const socket = new WebSocket(`${protocol}://localhost:5173`); //startup.260project.click
-  //   console.log('Connecting to websocket server at:', window.location.host);
-
-  //   console.log('Connecting to websocket server at:', window.location.host);
-  
-  //   socket.onopen = () => {
-  //     console.log('WebSocket connection established');
-  //   };
-  
-  //   socket.onmessage = (event) => {
-  //     try {
-  //       const message = JSON.parse(event.data);
-  //       console.log('Received message:', message);
-  //     } catch (e) {
-  //       console.error('Invalid JSON received:', event.data);
-  //     }
-      
-  //   };
-  
-  //   socket.onerror = (error) => {
-  //     console.error('WebSocket error:', error);
-  //   };
-
-  //   socket.onclose = () => {
-  //     console.log('Websocket connection closed')
-  //   };
-  //   socketRef.current = socket;
-  
-  //   return () => {
-  //     socket.close();
-  //   };
-    
-  // }, []);
   useEffect(() => {
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
       .then ((response) => response.json())

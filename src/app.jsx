@@ -16,6 +16,7 @@ export default function App() {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
     const socket = new WebSocket(`${protocol}://localhost:5173`) //change this to localhost:5143 when redoing code and npm run dev stuff
     console.log('Connecting to WebSocket server at:', window.location.host);
+    
     socket.onopen = () => {
       console.log('WebSocket connection established!');
     };
@@ -51,7 +52,7 @@ export default function App() {
     //adding this below
     // socketRef.current?.send(JSON.stringify({ type: 'login', username}));
     if (socketRef.current?.readyState === WebSocket.OPEN) {
-      socketRef.current.sned(JSON.stringify({ type: 'login', username }));
+      socketRef.current.send(JSON.stringify({ type: 'login', username }));
     } else {
       socketRef.current?.addEventListener('open', () => {
         socketRef.current.send(JSON.stringify({ type: 'login', username }));
@@ -63,7 +64,14 @@ export default function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     //adding this below
-    socketRef.current?.send(JSON.stringify({ type: 'logout' }));
+    // socketRef.current?.send(JSON.stringify({ type: 'logout' }));
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify({ type: 'logout', username }));
+    } else {
+      socketRef.current?.addEventListener('open', () => {
+        socketRef.current.send(JSON.stringify({ type: 'logout', username }));
+      }, {once: true});
+    }
   };
   
 
