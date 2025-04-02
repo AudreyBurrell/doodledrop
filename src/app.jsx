@@ -86,7 +86,7 @@ export default function App() {
         <Routes>
           <Route 
             path="/" 
-            element={<Login onLogin={handleLogin} />} 
+            element={<Login onLogin={handleLogin} activeUsers={activeUsers} />} //added the activeUsers = {activeUsers} 
             exact 
           />
           {/* If not logged in, redirect to Login */}
