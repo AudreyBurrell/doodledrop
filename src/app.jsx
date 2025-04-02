@@ -10,10 +10,11 @@ import { Share } from './share/share';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const socketRef = useRef(null); //added this and the useEffect below
+  const [activeUsers, setActiveUsers] = useState([]); //adding this
+  const socketRef = useRef(null); 
   useEffect(()=> {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://startup.260project.click`) //change this to localhost:4000 when redoing code and npm run dev stuff
+    const socket = new WebSocket(`${protocol}://localhost:5173`) //change this to localhost:5143 when redoing code and npm run dev stuff
     console.log('Connecting to WebSocket server at:', window.location.host);
     socket.onopen = () => {
       console.log('WebSocket connection established!');
@@ -22,6 +23,10 @@ export default function App() {
       try {
         const message = JSON.parse(event.data);
         console.log('Received message:', message);
+        //adding this if statement
+        if (message.type === 'activeUsers') {
+          setActiveUsers(message.users);
+        }
       } catch(e) {
         console.error('Invalid JSON received:', event.data);
       }
@@ -43,12 +48,22 @@ export default function App() {
     setIsLoggedIn(true);
     localStorage.setItem('username', username);
     console.log(`User ${username} logged in`);
+    //adding this below
+    // socketRef.current?.send(JSON.stringify({ type: 'login', username}));
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.sned(JSON.stringify({ type: 'login', username }));
+    } else {
+      socketRef.current?.addEventListener('open', () => {
+        socketRef.current.send(JSON.stringify({ type: 'login', username }));
+      }, {once: true});
+    }
   };
 
   // Define the handleLogout function
   const handleLogout = () => {
     setIsLoggedIn(false);
-    // navigate('/'); // This line was causing issues
+    //adding this below
+    socketRef.current?.send(JSON.stringify({ type: 'logout' }));
   };
   
 
