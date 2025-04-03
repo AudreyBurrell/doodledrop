@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 
-export function Login({ onLogin }) {
+export function Login({ onLogin, activeUsers }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [weatherData, setWeatherData] = useState(null);

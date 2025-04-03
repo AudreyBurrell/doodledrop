@@ -101,8 +101,8 @@ export default function App() {
             exact 
           />
           {/* If not logged in, redirect to Login */}
-          <Route path="/draw" element={isLoggedIn ? <Draw /> : <Login onLogin={handleLogin} />} />
-          <Route path="/gallery" element={isLoggedIn ? <Gallery /> : <Login onLogin={handleLogin} />} />
+          <Route path="/draw" element={isLoggedIn ? <Draw /> : <Login onLogin={handleLogin} activeUsers={activeUsers} />} />
+          <Route path="/gallery" element={isLoggedIn ? <Gallery /> : <Login onLogin={handleLogin} activeUsers = {activeUsers} />} />
           {/* <Route path="/share" element={isLoggedIn ? <Share /> : <Login onLogin={handleLogin} />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
