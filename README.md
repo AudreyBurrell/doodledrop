@@ -126,8 +126,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **Backend listens for WebSocket connection** - Listens on port 4000
+- [x] **Backend listens for WebSocket connection** - I included console.logs so I know where it is connecting, if it has been established, and when it receives a message and what that message is.
 - [x] **Frontend makes WebSocket connection** - Websocket connection is established.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Data sent over WebSocket connection** - Websocket is remembering if users are active and deleting them if they have logged out.
+- [x] **WebSocket data displayed** - The current users are displayed on the home page.
+- [x] **Application is fully functional** - Everything is working. Not gonna lie, I'm kind of sad that my project is done.
