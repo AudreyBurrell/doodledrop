@@ -8,7 +8,7 @@ export function Login({ onLogin }) {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeUsers, setActiveUsers] = useState([]);
+  //const [activeUsers, setActiveUsers] = useState([]);
 
   useEffect(() => {
       fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')

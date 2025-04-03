@@ -2,6 +2,7 @@
 const { WebSocketServer } = require('ws');
 
 const wss = new WebSocketServer({ noServer: true });
+let activeUsers = new Set(); //just added this
 
 // Add any WebSocket event handlers, for example:
 wss.on('connection', (ws) => {

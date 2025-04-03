@@ -64,6 +64,7 @@ export default function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     console.log('user successfully logged out!')
+    const username = localStorage.getItem('username') //just added this
     //adding this below
     // socketRef.current?.send(JSON.stringify({ type: 'logout' }));
     if (socketRef.current?.readyState === WebSocket.OPEN) {
@@ -73,6 +74,7 @@ export default function App() {
         socketRef.current.send(JSON.stringify({ type: 'logout', username }));
       }, {once: true});
     }
+    localStorage.removeItem('username') //added this as well
   };
   
 
